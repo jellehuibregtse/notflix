@@ -23,12 +23,4 @@ export const genre = (data: Partial<Genre> = {}, orm?: MikroORM): Genre => {
 export const createGenres = (
   genres: Partial<Genre>[] = [],
   orm?: MikroORM,
-): Genre[] => {
-  const result = genres.map((g: Partial<Genre>) => genre(g, orm));
-
-  if (!!orm) {
-    result.forEach((g: Genre) => orm.em.persist(g));
-  }
-
-  return result;
-};
+): Genre[] => genres.map((g: Partial<Genre>) => genre(g, orm));

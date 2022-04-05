@@ -28,12 +28,4 @@ export const movie = (data: Partial<Movie> = {}, orm?: MikroORM): Movie => {
 export const createMovies = (
   movies: Partial<Movie>[] = [],
   orm?: MikroORM,
-): Movie[] => {
-  const result = movies.map((m: Partial<Movie>) => movie(m, orm));
-
-  if (!!orm) {
-    result.forEach((m: Movie) => orm.em.persist(m));
-  }
-
-  return result;
-};
+): Movie[] => movies.map((m: Partial<Movie>) => movie(m, orm));
