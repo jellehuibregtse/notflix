@@ -6,7 +6,6 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiParam,
-  ApiProperty,
   ApiTags,
 } from '@nestjs/swagger';
 import {
@@ -19,47 +18,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Type } from 'class-transformer';
 import { Observable } from 'rxjs';
-
-class Entity {
-  @ApiProperty()
-  id: string;
-  @ApiProperty()
-  createdAt: Date;
-  @ApiProperty()
-  updatedAt: Date;
-}
-
-export class Movie extends Entity {
-  @ApiProperty()
-  @IsNotEmpty()
-  title: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  overview: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @Type(() => Date)
-  @IsDate()
-  releaseDate: Date;
-
-  @ApiProperty({
-    description: 'The runtime of the movie in minutes',
-    minimum: 0,
-  })
-  @IsNotEmpty()
-  @IsNumber()
-  runtime: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  posterPath: string;
-}
+import { Movie } from './dtos/movie.dto';
 
 @ApiTags('movies')
 @Controller('movies')

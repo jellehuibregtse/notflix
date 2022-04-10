@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Movie } from './movie.controller';
+import { Movie } from './dtos/movie.dto';
 
 @Injectable()
 export class MovieService {
