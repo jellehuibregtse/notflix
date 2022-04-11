@@ -1,16 +1,16 @@
-name: Movie service CI
+name: API gateway CI
 
 on:
   push:
     paths:
-      - movie-service/**
+      - api-gateway/**
 
 jobs:
   eslint:
     name: Check linting and formatting
     runs-on: ubuntu-latest
     env:
-      working-directory: ./movie-service
+      working-directory: ./api-gateway
     strategy:
       fail-fast: false
     steps:
@@ -53,7 +53,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-      working-directory: ./movie-service
+      working-directory: ./api-gateway
     strategy:
       fail-fast: false
     steps:
@@ -80,53 +80,4 @@ jobs:
       - name: Build
         run: |
           yarn build
-        working-directory: ${{ env.working-directory }}
-
-  test:
-    name: Tests
-    runs-on: ubuntu-latest
-    env:
-      working-directory: ./movie-service
-      DB_NAME_TEST: movie-service-test
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Checkout Source code
-        uses: actions/checkout@v3
-
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Init docker
-        run: docker-compose up -d
-        working-directory: ${{ env.working-directory }}
-
-      - name: Sleep for 10s
-        uses: juliangruber/sleep-action@v1
-        with:
-          time: 10s
-
-      - name: Install
-        run: |
-          yarn config set ignore-engines true
-          yarn
-        working-directory: ${{ env.working-directory }}
-
-      - name: Test
-        run: |
-          yarn test:cov
-        working-directory: ${{ env.working-directory }}
-
-      - name: Teardown docker
-        run: docker-compose down
         working-directory: ${{ env.working-directory }}
