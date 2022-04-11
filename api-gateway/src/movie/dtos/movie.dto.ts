@@ -1,7 +1,7 @@
 import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity } from './entity.dto';
+import { Entity } from '../../dtos/entity.dto';
 
 export class Movie extends Entity {
   @IsNotEmpty()
