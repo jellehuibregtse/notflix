@@ -1,21 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { useDatabaseTestConfig } from '../../test/helpers/database';
-import { Genre } from './entities/genre.entity';
-import { GenreController } from './genre.controller';
-import { GenreService } from './genre.service';
+import { User } from './entities/user.entity';
+import { UserService } from './user.service';
 
-describe('GenreModule', () => {
+describe('UserModule', () => {
   let module: TestingModule;
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
       imports: [
         useDatabaseTestConfig(),
-        MikroOrmModule.forFeature({ entities: [Genre] }),
+        MikroOrmModule.forFeature({ entities: [User] }),
       ],
-      controllers: [GenreController],
-      providers: [GenreService],
+      providers: [UserService],
     }).compile();
   });
 
@@ -25,7 +23,6 @@ describe('GenreModule', () => {
 
   it('should compile the module', async () => {
     expect(module).toBeDefined();
-    expect(module.get(GenreController)).toBeInstanceOf(GenreController);
-    expect(module.get(GenreService)).toBeInstanceOf(GenreService);
+    expect(module.get(UserService)).toBeInstanceOf(UserService);
   });
 });
