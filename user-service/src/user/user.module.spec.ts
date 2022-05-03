@@ -13,6 +13,7 @@ describe('UserModule', () => {
         useDatabaseTestConfig(),
         MikroOrmModule.forFeature({ entities: [User] }),
       ],
+      controllers: [UserService],
       providers: [UserService],
     }).compile();
   });
@@ -23,6 +24,7 @@ describe('UserModule', () => {
 
   it('should compile the module', async () => {
     expect(module).toBeDefined();
+    expect(module.get(UserService)).toBeInstanceOf(UserService);
     expect(module.get(UserService)).toBeInstanceOf(UserService);
   });
 });

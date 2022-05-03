@@ -4,12 +4,11 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { useDatabaseTestConfig } from '../../test/helpers/database';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
-import { UserController } from './user.controller';
 import { createUser } from '../../test/factories/user';
 import { faker } from '@faker-js/faker';
 
 describe('UserController', () => {
-  let userController: UserController;
+  let userController: UserService;
   let module: TestingModule;
   let orm: MikroORM;
 
@@ -19,11 +18,11 @@ describe('UserController', () => {
         useDatabaseTestConfig(),
         MikroOrmModule.forFeature({ entities: [User] }),
       ],
-      controllers: [UserController],
+      controllers: [UserService],
       providers: [UserService],
     }).compile();
 
-    userController = module.get<UserController>(UserController);
+    userController = module.get<UserService>(UserService);
     orm = module.get<MikroORM>(MikroORM);
   });
 

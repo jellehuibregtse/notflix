@@ -7,7 +7,6 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from '../user/user.module';
-import { UserController } from '../user/user.controller';
 import { createUser, createUserDto } from '../../test/factories/user';
 import { MikroORM } from '@mikro-orm/core';
 import { ConflictException, NotFoundException } from '@nestjs/common';

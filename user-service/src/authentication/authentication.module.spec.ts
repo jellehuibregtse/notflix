@@ -7,6 +7,8 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from '../user/user.module';
+import { LocalStrategy } from './strategies/local.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 describe('AuthenticationModule', () => {
   let module: TestingModule;
@@ -29,7 +31,7 @@ describe('AuthenticationModule', () => {
         }),
       ],
       controllers: [AuthenticationController],
-      providers: [AuthenticationService],
+      providers: [AuthenticationService, LocalStrategy, JwtStrategy],
     }).compile();
   });
 
@@ -46,5 +48,7 @@ describe('AuthenticationModule', () => {
       AuthenticationService,
     );
     expect(module.get(UserService)).toBeInstanceOf(UserService);
+    expect(module.get(LocalStrategy)).toBeInstanceOf(LocalStrategy);
+    expect(module.get(JwtStrategy)).toBeInstanceOf(JwtStrategy);
   });
 });
