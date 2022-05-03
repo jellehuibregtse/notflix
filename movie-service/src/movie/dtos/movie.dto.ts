@@ -9,7 +9,10 @@ export class MovieDto {
   overview: string;
 
   @IsNotEmpty()
-  @Type(() => Date)
+  @Type(
+    /* istanbul ignore next */
+    () => Date,
+  )
   @IsDate()
   releaseDate: Date;
 

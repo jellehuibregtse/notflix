@@ -2,16 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { useDatabaseTestConfig } from '../../test/helpers/database';
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationController } from './authenitcation.controller';
-import { UserService } from '../user/user.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from '../user/user.module';
 import { createUser, createUserDto } from '../../test/factories/user';
 import { MikroORM } from '@mikro-orm/core';
-import { ConflictException, NotFoundException } from '@nestjs/common';
-import { Request, Response } from 'express';
-import { RequestWithUser } from './interfaces/request-with-user.interface';
+import { ConflictException } from '@nestjs/common';
 
 describe('AuthenticationModule', () => {
   let authenticationController: AuthenticationController;
