@@ -1,6 +1,6 @@
-# Movie microservice
+# User microservice
 
-This is the movie microservice that will handle movie metadata and genre requests.
+This is the user microservice that will handle all user related operations.
 
 ## Getting started
 
