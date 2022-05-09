@@ -1,0 +1,78 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/api-gateway/src",
+  "compilerOptions": {
+    "plugins": [
+      "@nestjs/swagger"
+    ],
+    "webpack": true,
+    "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/api-gateway",
+  "projects": {
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
+    },
+    "movie-service": {
+      "type": "application",
+      "root": "apps/movie-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/movie-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/movie-service/tsconfig.app.json"
+      }
+    },
+    "user-service": {
+      "type": "application",
+      "root": "apps/user-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/user-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/user-service/tsconfig.app.json"
+      }
+    },
+    "movie": {
+      "type": "library",
+      "root": "libs/movie",
+      "entryFile": "index",
+      "sourceRoot": "libs/movie/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/movie/tsconfig.lib.json"
+      }
+    },
+    "database": {
+      "type": "library",
+      "root": "libs/database",
+      "entryFile": "index",
+      "sourceRoot": "libs/database/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/database/tsconfig.lib.json"
+      }
+    },
+    "genre": {
+      "type": "library",
+      "root": "libs/genre",
+      "entryFile": "index",
+      "sourceRoot": "libs/genre/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/genre/tsconfig.lib.json"
+      }
+    },
+    "user": {
+      "type": "library",
+      "root": "libs/user",
+      "entryFile": "index",
+      "sourceRoot": "libs/user/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/user/tsconfig.lib.json"
+      }
+    }
+  }
+}
