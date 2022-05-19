@@ -1,27 +1,28 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger, ValidationPipe } from '@nestjs/common';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-
-const logger = new Logger('Movie Service');
+import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
-      transport: Transport.TCP,
-      options: {
-        host: '127.0.0.1',
-        port: 8888,
-      },
-    },
-  );
+  const app = await NestFactory.create(AppModule);
+  app.enableCors();
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableShutdownHooks();
+  app.use(cookieParser());
 
-  await app.listen().then(() => {
-    logger.log('The movie service is listening.');
-  });
+  const config = new DocumentBuilder()
+    .setTitle('Admin service API')
+    .setDescription('The admin service API')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs/movie-service', app, document);
+
+  await app.listen(process.env.PORT || 3001);
 }
 
 bootstrap();

@@ -1,35 +1,77 @@
-import { Controller } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { Movie } from './entities/movie.entity';
 import { MovieDto } from './dtos/movie.dto';
-import { MessagePattern } from '@nestjs/microservices';
+import { GenreDto } from '../genre/dtos/genre.dto';
 
-@Controller()
+@ApiTags('movies')
+@Controller('movies')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
-  @MessagePattern({ cmd: 'getAllMovies' })
-  findAll(): Promise<Movie[]> {
+  @Get()
+  @ApiOperation({ summary: 'Get all movies' })
+  @ApiOkResponse()
+  async findAll(): Promise<Movie[]> {
     return this.movieService.findAll();
   }
 
-  @MessagePattern({ cmd: 'getMovieById' })
-  findOne(id: string): Promise<Movie> {
+  @Get(':id')
+  @ApiParam({ name: 'id', description: 'Movie id' })
+  @ApiOperation({ summary: 'Get movie by id' })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  async findOne(@Param('id') id: string): Promise<Movie> {
     return this.movieService.findOne(id);
   }
 
-  @MessagePattern({ cmd: 'createMovie' })
-  create(movie: MovieDto): Promise<Movie> {
+  @Post()
+  @ApiBody({ type: GenreDto })
+  @ApiOperation({ summary: 'Create a movie' })
+  @ApiCreatedResponse()
+  @ApiBadRequestResponse()
+  async create(@Body() movie: MovieDto): Promise<Movie> {
     return this.movieService.create(movie);
   }
 
-  @MessagePattern({ cmd: 'updateMovie' })
-  update(id: string, movie: MovieDto): Promise<Movie> {
+  @Put(':id')
+  @ApiParam({ name: 'id', description: 'Movie id' })
+  @ApiBody({ type: GenreDto })
+  @ApiOperation({ summary: 'Update a movie' })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  async update(
+    @Param('id') id: string,
+    @Body() movie: MovieDto,
+  ): Promise<Movie> {
     return this.movieService.update(id, movie);
   }
 
-  @MessagePattern({ cmd: 'deleteMovie' })
-  delete(id: string): Promise<void> {
+  @Delete(':id')
+  @ApiParam({ name: 'id', description: 'Movie id' })
+  @ApiOperation({ summary: 'Delete a movie' })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  async delete(@Param('id') id: string): Promise<void> {
     return this.movieService.delete(id);
   }
 }

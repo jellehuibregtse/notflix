@@ -11,7 +11,7 @@ async function bootstrap() {
   // app.use(cookieParser());
   app.enableShutdownHooks();
 
-  await app.listen(3005).then(() => {
+  await app.listen(process.env.PORT || 3002).then(() => {
     logger.log('The user service is listening.');
   });
 }
