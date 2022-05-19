@@ -8,7 +8,9 @@ import { GenreController } from './genre.controller';
 import { GenreService } from './genre.service';
 import { Genre } from './entities/genre.entity';
 import { createGenres, genre } from '../../test/factories/genre';
-import { GenreDto } from './dtos/genre.dto';
+import { Request, Response } from 'express';
+import { CreateGenreDto } from './dtos/create-genre.dto';
+import { PageOptionsDto } from '../dtos/page-options.dto';
 
 describe('GenreController', () => {
   let genreController: GenreController;
@@ -41,12 +43,25 @@ describe('GenreController', () => {
   });
 
   describe('findAll', () => {
+    let request, response: Partial<Response>;
+
+    beforeEach(() => {
+      request = {} as Request;
+      response = {
+        setHeader: jest.fn().mockImplementation(),
+      };
+    });
+
     it.each([...Array(10).keys()])(
       'should return an array of genres',
       async (length) => {
         const genres = createGenres(new Array(length).fill({}), orm);
 
-        const result = await genreController.findAll();
+        const result = await genreController.findAll(
+          new PageOptionsDto(),
+          response as Response,
+          request,
+        );
         expect(result).toBeInstanceOf(Array);
         expect(result).toHaveLength(length);
         expect(result).toEqual(genres);
@@ -54,7 +69,11 @@ describe('GenreController', () => {
     );
 
     it('should return an empty array if no genres are persisted', async () => {
-      const result = await genreController.findAll();
+      const result = await genreController.findAll(
+        new PageOptionsDto(),
+        response as Response,
+        request,
+      );
       expect(result).toBeInstanceOf(Array);
       expect(result).toHaveLength(0);
       expect(result).toEqual([]);
@@ -84,7 +103,7 @@ describe('GenreController', () => {
       const data = {
         name: 'Name',
       };
-      const testGenre = new GenreDto(data);
+      const testGenre = new CreateGenreDto(data);
 
       const result = await genreController.create(testGenre);
       expect(result).toBeInstanceOf(Genre);
@@ -98,7 +117,7 @@ describe('GenreController', () => {
       const data = {
         name: 'Name',
       };
-      const testGenreDto = new GenreDto(data);
+      const testGenreDto = new CreateGenreDto(data);
 
       const result = await genreController.update(testGenre.id, testGenreDto);
       expect(result).toBeInstanceOf(Genre);
@@ -107,7 +126,7 @@ describe('GenreController', () => {
 
     it('should return null if no genre is found', async () => {
       try {
-        await genreController.update(v4(), new GenreDto());
+        await genreController.update(v4(), new CreateGenreDto());
       } catch (e) {
         expect(e).toBeInstanceOf(NotFoundException);
       }

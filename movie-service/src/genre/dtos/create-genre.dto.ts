@@ -1,10 +1,10 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class GenreDto {
+export class CreateGenreDto {
   @IsNotEmpty()
   name: string;
 
-  constructor(data?: Partial<GenreDto>) {
+  constructor(data?: Partial<CreateGenreDto>) {
     Object.assign(this, data);
   }
 }

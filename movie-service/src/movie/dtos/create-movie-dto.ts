@@ -1,7 +1,7 @@
 import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class MovieDto {
+export class CreateMovieDto {
   @IsNotEmpty()
   title: string;
 
@@ -24,7 +24,7 @@ export class MovieDto {
   @IsString()
   posterPath: string;
 
-  constructor(data?: Partial<MovieDto>) {
+  constructor(data?: Partial<CreateMovieDto>) {
     Object.assign(this, data);
   }
 }

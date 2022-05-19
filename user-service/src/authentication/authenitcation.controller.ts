@@ -14,7 +14,9 @@ import { UserDto } from '../user/dtos/user.dto';
 import { RequestWithUser } from './interfaces/request-with-user.interface';
 import { LocalAuthenticationGuard } from './guards/local-authentication.guard';
 import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}

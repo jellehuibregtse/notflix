@@ -16,12 +16,12 @@ export const registerProxyGateway = (app: INestApplication) => {
     // Movie service api proxy
     '/api/movies': `http://${process.env.MOVIE_SERVICE_HOST}:${process.env.MOVIE_SERVICE_PORT}`,
     '/api/genres': `http://${process.env.MOVIE_SERVICE_HOST}:${process.env.MOVIE_SERVICE_PORT}`,
-    '/api/docs/movie-service': `http://${process.env.MOVIE_SERVICE_HOST}:${process.env.MOVIE_SERVICE_PORT}`,
+    '/docs/movie-service': `http://${process.env.MOVIE_SERVICE_HOST}:${process.env.MOVIE_SERVICE_PORT}`,
 
     // User service api proxy
     '/api/auth': `http://${process.env.USER_SERVICE_HOST}:${process.env.USER_SERVICE_PORT}`,
     '/api/users': `http://${process.env.USER_SERVICE_HOST}:${process.env.USER_SERVICE_PORT}`,
-    '/api/docs/user-service': `http://${process.env.USER_SERVICE_HOST}:${process.env.USER_SERVICE_PORT}`,
+    '/docs/user-service': `http://${process.env.USER_SERVICE_HOST}:${process.env.USER_SERVICE_PORT}`,
 
     // Web application
     '*': `http://${process.env.FRONTEND_HOST}:${process.env.FRONTEND_PORT}`,

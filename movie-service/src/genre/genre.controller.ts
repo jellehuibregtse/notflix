@@ -1,6 +1,7 @@
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -16,10 +17,16 @@ import {
   Param,
   Post,
   Put,
+  Query,
+  Req,
+  Res,
 } from '@nestjs/common';
 import { GenreService } from './genre.service';
 import { Genre } from './entities/genre.entity';
-import { GenreDto } from './dtos/genre.dto';
+import { Express, Request, Response } from 'express';
+import { PageOptionsDto } from '../dtos/page-options.dto';
+import { paginate } from '../helpers/pagination.helper';
+import { CreateGenreDto } from './dtos/create-genre.dto';
 
 @ApiTags('genres')
 @Controller('genres')
@@ -29,13 +36,20 @@ export class GenreController {
   @Get()
   @ApiOperation({ summary: 'Get all genres' })
   @ApiOkResponse()
-  async findAll(): Promise<Genre[]> {
-    return this.genreService.findAll();
+  async findAll(
+    @Query() pageOptions?: PageOptionsDto,
+    @Res({ passthrough: true }) response?: Response,
+    @Req() request?: Request,
+  ): Promise<Genre[]> {
+    return paginate<Genre>(
+      request,
+      response,
+      await this.genreService.findAll(pageOptions),
+      pageOptions,
+    );
   }
 
   @Get(':id')
-  @ApiParam({ name: 'id', description: 'Genre id' })
-  @ApiOperation({ summary: 'Get genre by id' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
   async findOne(@Param('id') id: string): Promise<Genre> {
@@ -43,30 +57,26 @@ export class GenreController {
   }
 
   @Post()
-  @ApiBody({ type: GenreDto })
-  @ApiOperation({ summary: 'Create a genre' })
   @ApiCreatedResponse()
   @ApiBadRequestResponse()
-  async create(@Body() genre: GenreDto): Promise<Genre> {
+  @ApiConflictResponse()
+  async create(@Body() genre: CreateGenreDto): Promise<Genre> {
     return this.genreService.create(genre);
   }
 
   @Put(':id')
-  @ApiParam({ name: 'id', description: 'Genre id' })
-  @ApiBody({ type: GenreDto })
   @ApiOperation({ summary: 'Update a genre' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
   async update(
     @Param('id') id: string,
-    @Body() genre: GenreDto,
+    @Body() genre: CreateGenreDto,
   ): Promise<Genre> {
     return this.genreService.update(id, genre);
   }
 
   @Delete(':id')
-  @ApiParam({ name: 'id', description: 'Genre id' })
   @ApiOperation({ summary: 'Delete a genre' })
   @ApiOkResponse()
   @ApiNotFoundResponse()

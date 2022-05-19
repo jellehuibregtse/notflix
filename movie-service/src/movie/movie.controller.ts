@@ -1,11 +1,10 @@
 import {
   ApiBadRequestResponse,
-  ApiBody,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import {
@@ -16,11 +15,16 @@ import {
   Param,
   Post,
   Put,
+  Query,
+  Req,
+  Res,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { Movie } from './entities/movie.entity';
-import { MovieDto } from './dtos/movie.dto';
-import { GenreDto } from '../genre/dtos/genre.dto';
+import { Request, Response } from 'express';
+import { PageOptionsDto } from '../dtos/page-options.dto';
+import { CreateMovieDto } from './dtos/create-movie-dto';
+import { paginate } from '../helpers/pagination.helper';
 
 @ApiTags('movies')
 @Controller('movies')
@@ -28,14 +32,22 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all movies' })
   @ApiOkResponse()
-  async findAll(): Promise<Movie[]> {
-    return this.movieService.findAll();
+  @ApiOperation({ summary: 'Get all movies' })
+  async findAll(
+    @Query() pageOptions?: PageOptionsDto,
+    @Res({ passthrough: true }) response?: Response,
+    @Req() request?: Request,
+  ): Promise<Movie[]> {
+    return paginate<Movie>(
+      request,
+      response,
+      await this.movieService.findAll(pageOptions),
+      pageOptions,
+    );
   }
 
   @Get(':id')
-  @ApiParam({ name: 'id', description: 'Movie id' })
   @ApiOperation({ summary: 'Get movie by id' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
@@ -44,30 +56,28 @@ export class MovieController {
   }
 
   @Post()
-  @ApiBody({ type: GenreDto })
   @ApiOperation({ summary: 'Create a movie' })
   @ApiCreatedResponse()
   @ApiBadRequestResponse()
-  async create(@Body() movie: MovieDto): Promise<Movie> {
+  @ApiConflictResponse()
+  async create(@Body() movie: CreateMovieDto): Promise<Movie> {
     return this.movieService.create(movie);
   }
 
   @Put(':id')
-  @ApiParam({ name: 'id', description: 'Movie id' })
-  @ApiBody({ type: GenreDto })
   @ApiOperation({ summary: 'Update a movie' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
+  @ApiConflictResponse()
   async update(
     @Param('id') id: string,
-    @Body() movie: MovieDto,
+    @Body() movie: CreateMovieDto,
   ): Promise<Movie> {
     return this.movieService.update(id, movie);
   }
 
   @Delete(':id')
-  @ApiParam({ name: 'id', description: 'Movie id' })
   @ApiOperation({ summary: 'Delete a movie' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
