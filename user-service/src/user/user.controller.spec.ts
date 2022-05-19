@@ -6,9 +6,11 @@ import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { createUser } from '../../test/factories/user';
 import { faker } from '@faker-js/faker';
+import { UserController } from './user.controller';
+import { IsEmailTakenDto } from './dtos/is-email-taken.dto';
 
 describe('UserController', () => {
-  let userController: UserService;
+  let userController: UserController;
   let module: TestingModule;
   let orm: MikroORM;
 
@@ -18,11 +20,11 @@ describe('UserController', () => {
         useDatabaseTestConfig(),
         MikroOrmModule.forFeature({ entities: [User] }),
       ],
-      controllers: [UserService],
+      controllers: [UserController],
       providers: [UserService],
     }).compile();
 
-    userController = module.get<UserService>(UserService);
+    userController = module.get<UserController>(UserController);
     orm = module.get<MikroORM>(MikroORM);
   });
 
@@ -40,13 +42,17 @@ describe('UserController', () => {
       const user = createUser({}, orm);
       const email = user.email;
 
-      expect(await userController.isEmailTaken(email)).toBe(true);
+      expect(
+        await userController.isEmailTaken(new IsEmailTakenDto(email)),
+      ).toBe(true);
     });
 
     it('should return false if the email is not taken', async () => {
-      expect(await userController.isEmailTaken(faker.internet.email())).toBe(
-        false,
-      );
+      expect(
+        await userController.isEmailTaken(
+          new IsEmailTakenDto(faker.internet.email()),
+        ),
+      ).toBe(false);
     });
   });
 });

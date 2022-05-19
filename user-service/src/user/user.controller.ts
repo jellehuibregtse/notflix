@@ -1,15 +1,18 @@
 import { UserService } from './user.service';
-import { ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Param } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { IsEmailTakenDto } from './dtos/is-email-taken.dto';
 
 @ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // Implement isEmailTaken endpoint that takes email as a parameter and returns true if email is taken
-  @Get('email/:email')
-  async isEmailTaken(@Param('email') email: string): Promise<boolean> {
-    return await this.userService.isEmailTaken(email);
+  @Post('email')
+  @HttpCode(200)
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
+  async isEmailTaken(@Body() data: IsEmailTakenDto): Promise<boolean> {
+    return await this.userService.isEmailTaken(data.email);
   }
 }
