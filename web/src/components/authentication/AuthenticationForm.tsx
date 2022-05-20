@@ -47,7 +47,7 @@ export function AuthenticationForm(props: PaperProps<'div'>) {
 
   return (
     <Container size={420} my={40}>
-      <Paper withBorder p={30} mt={30} radius="md" {...props}>
+      <Paper p={30} mt={30} {...props}>
         <Title
           align="center"
           sx={() => ({

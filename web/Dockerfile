@@ -23,6 +23,5 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/build ./build
 
 RUN yarn global add serve
-
-CMD ["yarn","serve","-s" ,"build", "-l","80"]
 EXPOSE 80
+CMD ["serve","-s" ,"build", "-l","80"]

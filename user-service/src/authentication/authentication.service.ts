@@ -7,13 +7,11 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { User } from '../user/entities/user.entity';
 import { UserDto } from '../user/dtos/user.dto';
 import { PostgresErrorCode } from '../database/postgres-error-codes.enum';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TokenPayload } from './interfaces/token-payload.interface';
-import { createUser } from '../../test/factories/user';
 
 @Injectable()
 export class AuthenticationService {

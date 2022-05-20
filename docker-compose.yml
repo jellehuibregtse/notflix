@@ -37,13 +37,10 @@ services:
     env_file:
       - ./user-service/.env
     environment:
-      JWT_SECRET: ${JWT_SECRET:-MyRandomSecret}
-      OAUTH_REDIRECT_URL: http://localhost:8000/api/login/openid/return
       DB_HOST: postgres
       DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
       DB_NAME: ${DB_NAME:-user-service}
-      DB_NAME_TEST: ${DB_NAME_TEST:-user-service-test}
       PORT: ${PORT:-3002}
     networks:
       - backend
@@ -63,7 +60,6 @@ services:
       DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
       DB_NAME: ${DB_NAME:-movie-service}
-      JWT_SECRET: ${JWT_SECRET:-MyRandomSecret}
       PORT: ${PORT:-3001}
     networks:
       - backend
@@ -78,7 +74,7 @@ services:
     environment:
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
-      POSTGRES_DB: ${DB_NAME:-postgres}
+      POSTGRES_DB: ${DB_NAME}
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
