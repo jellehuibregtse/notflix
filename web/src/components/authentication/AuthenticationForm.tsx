@@ -1,4 +1,4 @@
-import { upperFirst, useForm, useToggle } from '@mantine/hooks';
+import { upperFirst, useToggle } from '@mantine/hooks';
 import {
   Anchor,
   Button,
@@ -19,6 +19,8 @@ import {
   includesUpperCase,
   minLength,
 } from '../../constants/PasswordValidation';
+import { useForm } from '@mantine/form';
+import { useLogin, useRegister } from '../../api/requests/token';
 
 export function AuthenticationForm(props: PaperProps<'div'>) {
   const [type, toggle] = useToggle('login', ['login', 'register']);
@@ -30,20 +32,22 @@ export function AuthenticationForm(props: PaperProps<'div'>) {
       terms: true,
     },
 
-    validationRules: {
-      email: (val) => /^\S+@\S+$/.test(val),
-      password: (val) =>
-        val.length >= minLength &&
-        includesNumber.test(val) &&
-        includesLowerCase.test(val) &&
-        includesUpperCase.test(val) &&
-        includesSpecialSymbol.test(val),
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      password: (value) =>
+        value.length >= minLength &&
+        includesNumber.test(value) &&
+        includesLowerCase.test(value) &&
+        includesUpperCase.test(value) &&
+        includesSpecialSymbol.test(value)
+          ? null
+          : 'Invalid password',
     },
   });
 
   return (
     <Container size={420} my={40}>
-      <Paper withBorder shadow="xl" p={30} mt={30} radius="md" {...props}>
+      <Paper withBorder p={30} mt={30} radius="md" {...props}>
         <Title
           align="center"
           sx={() => ({
@@ -66,16 +70,20 @@ export function AuthenticationForm(props: PaperProps<'div'>) {
           </Anchor>
         </Text>
 
-        <form onSubmit={form.onSubmit((data) => console.log(data))}>
+        <form
+          onSubmit={form.onSubmit((values: typeof form.values) => {
+            return type === 'login'
+              ? useLogin(values.email, values.password)
+              : useRegister(values.email, values.password);
+          })}
+          id={type}
+        >
           <Group direction="column" grow>
             {type === 'register' && (
               <TextInput
                 label={'Name'}
                 placeholder={'Your name'}
-                value={form.values.name}
-                onChange={(event) =>
-                  form.setFieldValue('name', event.currentTarget.value)
-                }
+                {...form.getInputProps('name')}
               />
             )}
 
@@ -83,33 +91,23 @@ export function AuthenticationForm(props: PaperProps<'div'>) {
               required
               label={'Email'}
               placeholder="hello@mantine.dev"
-              value={form.values.email}
-              onChange={(event) =>
-                form.setFieldValue('email', event.currentTarget.value)
-              }
-              error={form.errors.email && 'Invalid email'}
+              {...form.getInputProps('email')}
             />
 
             <PasswordInput
               withPasswordRequirements={type === 'register'}
-              value={form.values.password}
-              onChange={(event) =>
-                form.setFieldValue('password', event.currentTarget.value)
-              }
+              {...form.getInputProps('password')}
             />
 
             {type === 'register' && (
               <Checkbox
                 label={'I accept the terms and conditions'}
-                checked={form.values.terms}
-                onChange={(event) =>
-                  form.setFieldValue('terms', event.currentTarget.checked)
-                }
+                {...form.getInputProps('terms', { type: 'checkbox' })}
               />
             )}
           </Group>
 
-          <Button mt="xl" type="submit" fullWidth>
+          <Button mt="xl" type="submit" form={type} fullWidth>
             {upperFirst(type)}
           </Button>
         </form>

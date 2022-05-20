@@ -13,6 +13,7 @@ import { PostgresErrorCode } from '../database/postgres-error-codes.enum';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TokenPayload } from './interfaces/token-payload.interface';
+import { createUser } from '../../test/factories/user';
 
 @Injectable()
 export class AuthenticationService {
@@ -22,7 +23,7 @@ export class AuthenticationService {
     private readonly configService: ConfigService,
   ) {}
 
-  public async register(registrationData: UserDto): Promise<Partial<User>> {
+  public async register(registrationData: UserDto): Promise<string> {
     const saltOrRounds = 10;
     const hashedPassword = await bcrypt.hash(
       registrationData.password,
@@ -35,7 +36,7 @@ export class AuthenticationService {
       });
       // Make sure we don't send the password back.
       delete createdUser.password;
-      return createdUser;
+      return this.getJwt(createdUser.id);
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation) {
         throw new ConflictException('A user with that email already exists.');
@@ -54,15 +55,8 @@ export class AuthenticationService {
     return user;
   }
 
-  public getCookieWithJwt(userId: string) {
+  public getJwt(userId: string): string {
     const payload: TokenPayload = { userId };
-    const token = this.jwtService.sign(payload);
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
-      'JWT_EXPIRATION_TIME',
-    )}`;
-  }
-
-  public getCookieForLogOut() {
-    return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+    return this.jwtService.sign(payload);
   }
 }

@@ -31,30 +31,13 @@ export class AuthenticationController {
   @Post('login')
   async login(
     @Req() request: RequestWithUser,
-    @Res({ passthrough: true }) response: Response,
-  ) {
+  ): Promise<{ accessToken: string }> {
     const { user } = request;
-    const cookie = this.authenticationService.getCookieWithJwt(user.id);
-    response.setHeader('Set-Cookie', cookie);
-    delete user.password;
-    return user;
+    return { accessToken: this.authenticationService.getJwt(user.id) };
   }
 
   @UseGuards(JwtAuthenticationGuard)
-  @Post('log-out')
-  async logout(
-    @Req() request: RequestWithUser,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    response.setHeader(
-      'Set-Cookie',
-      this.authenticationService.getCookieForLogOut(),
-    );
-    return;
-  }
-
-  @UseGuards(JwtAuthenticationGuard)
-  @Get()
+  @Get('me')
   authenticate(@Req() request: RequestWithUser) {
     const user = request.user;
     delete user.password;

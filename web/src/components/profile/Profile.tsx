@@ -1,4 +1,4 @@
-import { Container, Image, Overlay } from '@mantine/core';
+import { Container, Image } from '@mantine/core';
 
 interface Props {
   imageSrc: string;

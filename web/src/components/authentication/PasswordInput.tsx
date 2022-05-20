@@ -16,6 +16,7 @@ import {
   includesUpperCase,
   minLength,
 } from '../../constants/PasswordValidation';
+import { GetInputProps } from '@mantine/form/lib/types';
 
 function PasswordRequirement({
   meets,

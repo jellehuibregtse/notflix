@@ -1,5 +1,11 @@
-import { Loader } from '@mantine/core';
+import { Center, Container, Loader } from '@mantine/core';
 
-export function CustomLoader() {
-  return <Loader />;
+export function CustomLoader(): JSX.Element {
+  return (
+    <Container fluid>
+      <Center>
+        <Loader />
+      </Center>
+    </Container>
+  );
 }

@@ -11,31 +11,19 @@ import {
   Header,
   Menu,
   UnstyledButton,
-  Text,
 } from '@mantine/core';
 import { NotflixIcon } from '../icon/NotflixIcon';
 import { Link } from 'react-router-dom';
 import { useLoggedIn } from '../../hooks/useLoggedIn';
 import { useBooleanToggle } from '@mantine/hooks';
-import {
-  ChevronDown,
-  Heart,
-  Help,
-  Logout,
-  Message,
-  PlayerPause,
-  Settings,
-  Star,
-  SwitchHorizontal,
-  Trash,
-  User,
-} from 'tabler-icons-react';
+import { ChevronDown, Help, Logout, User } from 'tabler-icons-react';
 import { LanguagePicker } from '../i18n/LanguagePicker';
 import avatarOne from '../../assets/images/avatars/Avatar_01.png';
 import avatarTwo from '../../assets/images/avatars/Avatar_02.png';
 import avatarThree from '../../assets/images/avatars/Avatar_03.png';
 import avatarFour from '../../assets/images/avatars/Avatar_04.png';
 import avatarFive from '../../assets/images/avatars/Avatar_05.png';
+import { useLogout } from '../../api/requests/token';
 
 const HEADER_HEIGHT = 60;
 
@@ -139,7 +127,7 @@ interface Props {
 
 export function CustomHeader({ links, user }: Props): JSX.Element {
   const { classes, cx } = useStyles();
-  const loggedIn = useLoggedIn(true);
+  const loggedIn = useLoggedIn();
   const [opened, toggleOpened] = useBooleanToggle(false);
   const [userMenuOpened, setUserMenuOpened] = useBooleanToggle(false);
 
@@ -252,7 +240,10 @@ export function CustomHeader({ links, user }: Props): JSX.Element {
                   <Menu.Item icon={<User size={24} />}>Account</Menu.Item>
                   <Menu.Item icon={<Help size={24} />}>Help centre</Menu.Item>
                   <Divider />
-                  <Menu.Item icon={<Logout size={24} />}>
+                  <Menu.Item
+                    icon={<Logout size={24} />}
+                    onClick={() => useLogout()}
+                  >
                     Sign out of Notflix
                   </Menu.Item>
                 </Menu>
