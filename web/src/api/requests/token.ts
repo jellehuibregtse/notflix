@@ -8,7 +8,7 @@ export const useRegister = (email: string, password: string) => {
   }).then(async (response) => {
     if (response.ok)
       return response.json().then((body: { accessToken: string }) => {
-        window.location.assign('/login');
+        window.location.assign('/browse');
         localStorage.setItem('accessToken', body.accessToken);
       });
   });
@@ -24,7 +24,7 @@ export const useLogin = (email: string, password: string) => {
   }).then(async (response) => {
     if (response.ok)
       return response.json().then((body: { accessToken: string }) => {
-        window.location.assign('/login');
+        window.location.assign('/browse');
         localStorage.setItem('accessToken', body.accessToken);
       });
   });

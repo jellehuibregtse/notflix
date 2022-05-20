@@ -36,7 +36,7 @@ const theme: MantineThemeOverride = {
 
 const headerLinks = [
   {
-    link: '/',
+    link: '/browse',
     label: 'Home',
   },
   {

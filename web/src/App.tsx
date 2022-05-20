@@ -3,14 +3,24 @@ import { Route, Routes } from 'react-router-dom';
 import { Home } from './pages/home/Home';
 import { Login } from './pages/login/Login';
 import { Browse } from './pages/browse/Browse';
+import { useLoggedIn } from './hooks/useLoggedIn';
 
-export default function App() {
+export default function App(): JSX.Element {
+  const loggedIn = useLoggedIn();
+
   return (
     <ApplicationContainer>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/browse" element={<Browse />} />
-        <Route path="/" element={<Home />} />
+        {!loggedIn ? (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Home />} />
+          </>
+        ) : (
+          <>
+            <Route path="/browse" element={<Browse />} />
+          </>
+        )}
       </Routes>
     </ApplicationContainer>
   );
