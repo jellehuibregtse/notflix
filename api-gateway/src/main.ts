@@ -1,10 +1,10 @@
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
-import { registerProxyGateway } from "./proxy/routes.proxy";
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { registerProxyGateway } from './proxy/routes.proxy';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bodyParser: false });
-  app.setGlobalPrefix("api");
+  app.setGlobalPrefix('api');
 
   registerProxyGateway(app);
 
