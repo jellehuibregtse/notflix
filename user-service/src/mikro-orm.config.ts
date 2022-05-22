@@ -15,6 +15,7 @@ const config = {
     pathTs: './src/database/migrations',
   },
   logger: logger.log.bind(logger),
+  host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   registerRequestContext: false,

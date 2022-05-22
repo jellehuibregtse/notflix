@@ -2,8 +2,10 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository, wrap } from '@mikro-orm/core';
 import { Movie } from './entities/movie.entity';
 import { Injectable } from '@nestjs/common';
-import { MovieDto } from './dtos/movie.dto';
 import { ENTITY_NOT_FOUND } from '../exceptions';
+import { PageOptionsDto } from '../dtos/page-options.dto';
+import { PaginatedResult } from '../helpers/pagination.helper';
+import { CreateMovieDto } from './dtos/create-movie-dto';
 
 @Injectable()
 export class MovieService {
@@ -14,10 +16,14 @@ export class MovieService {
 
   /**
    * Retrieve all movies from the database.
+   * @param pageOptions - Pagination options.
    * @returns A promise of a list of movies.
    */
-  async findAll(): Promise<Movie[]> {
-    return await this.movieRepository.findAll();
+  async findAll(pageOptions: PageOptionsDto): Promise<PaginatedResult<Movie>> {
+    return await this.movieRepository.findAndCount(
+      {},
+      { limit: pageOptions.limit, offset: pageOptions.offset },
+    );
   }
 
   /**
@@ -36,7 +42,7 @@ export class MovieService {
    * @param movieData A DTO containing the data of the movie to create.
    * @returns A promise of the created movie.
    */
-  async create(movieData: MovieDto): Promise<Movie> {
+  async create(movieData: CreateMovieDto): Promise<Movie> {
     const movie: Movie = this.movieRepository.create({
       ...movieData,
     });
@@ -50,7 +56,7 @@ export class MovieService {
    * @param movieData A DTO containing the data of the movie to update.
    * @returns A promise of the updated movie.
    */
-  async update(id: string, movieData: MovieDto): Promise<Movie> {
+  async update(id: string, movieData: CreateMovieDto): Promise<Movie> {
     const movie = await this.movieRepository.findOne(id);
     if (!movie) ENTITY_NOT_FOUND('Movie', id);
 

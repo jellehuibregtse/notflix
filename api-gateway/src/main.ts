@@ -1,26 +1,14 @@
-import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { writeFileSync } from 'fs';
+import { registerProxyGateway } from './proxy/routes.proxy';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bodyParser: false });
   app.setGlobalPrefix('api');
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  app.enableShutdownHooks();
 
-  const config = new DocumentBuilder()
-    .setTitle('Notflix API')
-    .setDescription('The Notflix API')
-    .setVersion('1.0')
-    .build();
+  registerProxyGateway(app);
 
-  const document = SwaggerModule.createDocument(app, config);
-  writeFileSync('dist/openapi.json', JSON.stringify(document));
-  SwaggerModule.setup('docs', app, document);
-
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3003);
 }
 
 bootstrap();

@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository, wrap } from '@mikro-orm/core';
 import { Genre } from './entities/genre.entity';
-import { GenreDto } from './dtos/genre.dto';
 import { ENTITY_NOT_FOUND } from '../exceptions';
+import { PageOptionsDto } from '../dtos/page-options.dto';
+import { PaginatedResult } from '../helpers/pagination.helper';
+import { CreateGenreDto } from './dtos/create-genre.dto';
 
 @Injectable()
 export class GenreService {
@@ -14,10 +16,17 @@ export class GenreService {
 
   /**
    * Retrieve all genres from the database.
+   * @param pageOptions - Pagination options.
    * @returns A promise of a list of genres.
    */
-  async findAll(): Promise<Genre[]> {
-    return await this.genreRepository.findAll();
+  async findAll(pageOptions: PageOptionsDto): Promise<PaginatedResult<Genre>> {
+    return await this.genreRepository.findAndCount(
+      {},
+      {
+        limit: pageOptions.limit,
+        offset: pageOptions.offset,
+      },
+    );
   }
 
   /**
@@ -36,7 +45,7 @@ export class GenreService {
    * @param genreData A DTO containing the data of the genre to create.
    * @returns A promise of the created genre.
    */
-  async create(genreData: GenreDto): Promise<Genre> {
+  async create(genreData: CreateGenreDto): Promise<Genre> {
     const genre: Genre = this.genreRepository.create({
       ...genreData,
     });
@@ -50,7 +59,7 @@ export class GenreService {
    * @param genreData A DTO containing the data of the genre to update.
    * @returns A promise of the updated genre.
    */
-  async update(id: string, genreData: GenreDto): Promise<Genre> {
+  async update(id: string, genreData: CreateGenreDto): Promise<Genre> {
     const genre = await this.genreRepository.findOne(id);
     if (!genre) ENTITY_NOT_FOUND('Genre', id);
 

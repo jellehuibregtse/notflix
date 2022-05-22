@@ -56,12 +56,7 @@ describe('AuthenticationModule', () => {
       const dto = createUserDto();
 
       expect(await authenticationController.register(dto)).toStrictEqual(
-        expect.objectContaining({
-          id: expect.any(String),
-          updatedAt: expect.any(Date),
-          createdAt: expect.any(Date),
-          email: dto.email,
-        }),
+        expect.any(String),
       );
     });
 

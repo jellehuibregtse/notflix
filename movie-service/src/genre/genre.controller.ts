@@ -1,35 +1,86 @@
-import { Controller } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { GenreService } from './genre.service';
 import { Genre } from './entities/genre.entity';
-import { GenreDto } from './dtos/genre.dto';
-import { MessagePattern } from '@nestjs/microservices';
+import { Express, Request, Response } from 'express';
+import { PageOptionsDto } from '../dtos/page-options.dto';
+import { paginate } from '../helpers/pagination.helper';
+import { CreateGenreDto } from './dtos/create-genre.dto';
 
-@Controller()
+@ApiTags('genres')
+@Controller('genres')
 export class GenreController {
   constructor(private readonly genreService: GenreService) {}
 
-  @MessagePattern({ cmd: 'getAllGenres' })
-  findAll(): Promise<Genre[]> {
-    return this.genreService.findAll();
+  @Get()
+  @ApiOperation({ summary: 'Get all genres' })
+  @ApiOkResponse()
+  async findAll(
+    @Query() pageOptions?: PageOptionsDto,
+    @Res({ passthrough: true }) response?: Response,
+    @Req() request?: Request,
+  ): Promise<Genre[]> {
+    return paginate<Genre>(
+      request,
+      response,
+      await this.genreService.findAll(pageOptions),
+      pageOptions,
+    );
   }
 
-  @MessagePattern({ cmd: 'getGenreById' })
-  findOne(id: string): Promise<Genre> {
+  @Get(':id')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  async findOne(@Param('id') id: string): Promise<Genre> {
     return this.genreService.findOne(id);
   }
 
-  @MessagePattern({ cmd: 'createGenre' })
-  create(genre: GenreDto): Promise<Genre> {
+  @Post()
+  @ApiCreatedResponse()
+  @ApiBadRequestResponse()
+  @ApiConflictResponse()
+  async create(@Body() genre: CreateGenreDto): Promise<Genre> {
     return this.genreService.create(genre);
   }
 
-  @MessagePattern({ cmd: 'updateGenre' })
-  update(id: string, genre: GenreDto): Promise<Genre> {
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a genre' })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  async update(
+    @Param('id') id: string,
+    @Body() genre: CreateGenreDto,
+  ): Promise<Genre> {
     return this.genreService.update(id, genre);
   }
 
-  @MessagePattern({ cmd: 'deleteGenre' })
-  delete(id: string): Promise<void> {
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete a genre' })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  async delete(@Param('id') id: string): Promise<void> {
     return this.genreService.delete(id);
   }
 }

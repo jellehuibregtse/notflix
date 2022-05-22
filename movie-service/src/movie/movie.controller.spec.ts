@@ -7,8 +7,10 @@ import { useDatabaseTestConfig } from '../../test/helpers/database';
 import { MovieService } from './movie.service';
 import { Movie } from './entities/movie.entity';
 import { createMovies, movie } from '../../test/factories/movie';
-import { MovieDto } from './dtos/movie.dto';
 import { NotFoundException } from '@nestjs/common';
+import { CreateMovieDto } from './dtos/create-movie-dto';
+import { PageOptionsDto } from '../dtos/page-options.dto';
+import { Request, Response } from 'express';
 
 describe('MovieController', () => {
   let movieController: MovieController;
@@ -41,12 +43,25 @@ describe('MovieController', () => {
   });
 
   describe('findAll', () => {
+    let request, response: Partial<Response>;
+
+    beforeEach(() => {
+      request = {} as Request;
+      response = {
+        setHeader: jest.fn().mockImplementation(),
+      };
+    });
+
     it.each([...Array(10).keys()])(
       'should return an array of movies',
       async (length) => {
         const movies = createMovies(new Array(length).fill({}), orm);
 
-        const result = await movieController.findAll();
+        const result = await movieController.findAll(
+          new PageOptionsDto(),
+          response as Response,
+          request,
+        );
         expect(result).toBeInstanceOf(Array);
         expect(result).toHaveLength(length);
         expect(result).toEqual(movies);
@@ -54,7 +69,11 @@ describe('MovieController', () => {
     );
 
     it('should return an empty array if no movies are persisted', async () => {
-      const result = await movieController.findAll();
+      const result = await movieController.findAll(
+        new PageOptionsDto(),
+        response as Response,
+        request,
+      );
       expect(result).toBeInstanceOf(Array);
       expect(result).toHaveLength(0);
       expect(result).toEqual([]);
@@ -88,7 +107,7 @@ describe('MovieController', () => {
         runtime: 90,
         posterPath: 'test/path',
       };
-      const testMovie = new MovieDto(data);
+      const testMovie = new CreateMovieDto(data);
 
       const result = await movieController.create(testMovie);
       expect(result).toBeInstanceOf(Movie);
@@ -106,7 +125,7 @@ describe('MovieController', () => {
         runtime: 90,
         posterPath: 'test/path',
       };
-      const testMovieDto = new MovieDto(data);
+      const testMovieDto = new CreateMovieDto(data);
 
       const result = await movieController.update(testMovie.id, testMovieDto);
       expect(result).toBeInstanceOf(Movie);
@@ -115,7 +134,7 @@ describe('MovieController', () => {
 
     it('should return null if no movie is found', async () => {
       try {
-        await movieController.update(v4(), new MovieDto({}));
+        await movieController.update(v4(), new CreateMovieDto({}));
       } catch (e) {
         expect(e).toBeInstanceOf(NotFoundException);
       }

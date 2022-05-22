@@ -1,19 +1,28 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger, ValidationPipe } from '@nestjs/common';
-// import * as cookieParser from 'cookie-parser';
-
-const logger = new Logger('User Service');
+import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  // app.use(cookieParser());
   app.enableShutdownHooks();
+  app.use(cookieParser());
 
-  await app.listen(3005).then(() => {
-    logger.log('The user service is listening.');
-  });
+  const config = new DocumentBuilder()
+    .setTitle('User service API')
+    .setDescription('The user service API')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs/user-service', app, document);
+
+  await app.listen(process.env.PORT || 3002);
 }
 
 bootstrap();

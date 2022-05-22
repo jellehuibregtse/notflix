@@ -1,35 +1,87 @@
-import { Controller } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { Movie } from './entities/movie.entity';
-import { MovieDto } from './dtos/movie.dto';
-import { MessagePattern } from '@nestjs/microservices';
+import { Request, Response } from 'express';
+import { PageOptionsDto } from '../dtos/page-options.dto';
+import { CreateMovieDto } from './dtos/create-movie-dto';
+import { paginate } from '../helpers/pagination.helper';
 
-@Controller()
+@ApiTags('movies')
+@Controller('movies')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
-  @MessagePattern({ cmd: 'getAllMovies' })
-  findAll(): Promise<Movie[]> {
-    return this.movieService.findAll();
+  @Get()
+  @ApiOkResponse()
+  @ApiOperation({ summary: 'Get all movies' })
+  async findAll(
+    @Query() pageOptions?: PageOptionsDto,
+    @Res({ passthrough: true }) response?: Response,
+    @Req() request?: Request,
+  ): Promise<Movie[]> {
+    return paginate<Movie>(
+      request,
+      response,
+      await this.movieService.findAll(pageOptions),
+      pageOptions,
+    );
   }
 
-  @MessagePattern({ cmd: 'getMovieById' })
-  findOne(id: string): Promise<Movie> {
+  @Get(':id')
+  @ApiOperation({ summary: 'Get movie by id' })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  async findOne(@Param('id') id: string): Promise<Movie> {
     return this.movieService.findOne(id);
   }
 
-  @MessagePattern({ cmd: 'createMovie' })
-  create(movie: MovieDto): Promise<Movie> {
+  @Post()
+  @ApiOperation({ summary: 'Create a movie' })
+  @ApiCreatedResponse()
+  @ApiBadRequestResponse()
+  @ApiConflictResponse()
+  async create(@Body() movie: CreateMovieDto): Promise<Movie> {
     return this.movieService.create(movie);
   }
 
-  @MessagePattern({ cmd: 'updateMovie' })
-  update(id: string, movie: MovieDto): Promise<Movie> {
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a movie' })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @ApiConflictResponse()
+  async update(
+    @Param('id') id: string,
+    @Body() movie: CreateMovieDto,
+  ): Promise<Movie> {
     return this.movieService.update(id, movie);
   }
 
-  @MessagePattern({ cmd: 'deleteMovie' })
-  delete(id: string): Promise<void> {
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete a movie' })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  async delete(@Param('id') id: string): Promise<void> {
     return this.movieService.delete(id);
   }
 }
