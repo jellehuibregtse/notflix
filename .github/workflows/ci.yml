@@ -1,10 +1,10 @@
-name: API gateway CI
+name: CI pipeline
 
 on: [push]
 
 jobs:
   eslint:
-    name: Check linting and formatting
+    name: 🧪 Check linting and formatting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source code
@@ -43,7 +43,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
 
   build:
-    name: Build
+    name: 🔨 Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source code
