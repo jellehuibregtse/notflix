@@ -253,7 +253,7 @@ export function CustomHeader({ links, user }: Props): JSX.Element {
             <>
               <NotflixIcon />
               <Button component={Link} to="/login">
-                Sign In
+                Sign Ind
               </Button>
             </>
           )}
