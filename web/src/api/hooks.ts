@@ -1,10 +1,10 @@
 import {
+  useMutation,
+  UseMutationOptions,
   useQuery,
   UseQueryOptions,
-  UseMutationOptions,
-  useMutation,
 } from 'react-query';
-import { defaultFetch, defaultCreate, defaultUpdate } from './requests';
+import { defaultCreate, defaultFetch, defaultUpdate } from './requests';
 
 export const useFetch = <TResponse>(
   path: string,

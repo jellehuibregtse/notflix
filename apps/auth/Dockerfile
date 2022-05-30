@@ -19,8 +19,6 @@ COPY yarn.lock ./
 RUN yarn install --production
 
 COPY . .
-COPY --from=development /usr/src/app/build ./build
+COPY --from=development /usr/src/app/dist ./dist
 
-RUN yarn global add serve
-
-CMD ["serve","-s" ,"build", "-l","80"]
+CMD ["node", "dist/apps/auth/main"]

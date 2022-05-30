@@ -1,3 +1,9 @@
+interface TokenResponse {
+  access_token: string;
+  expires_in: number;
+  token_type: string;
+}
+
 export const useRegister = (email: string, password: string) => {
   fetch('/api/auth/register', {
     method: 'POST',
@@ -7,9 +13,9 @@ export const useRegister = (email: string, password: string) => {
     body: JSON.stringify({ email, password }),
   }).then(async (response) => {
     if (response.ok)
-      return response.json().then((body: { accessToken: string }) => {
+      return response.json().then((body: TokenResponse) => {
         window.location.assign('/browse');
-        localStorage.setItem('accessToken', body.accessToken);
+        localStorage.setItem('access_token', body.access_token);
       });
   });
 };
@@ -23,9 +29,9 @@ export const useLogin = (email: string, password: string) => {
     body: JSON.stringify({ email, password }),
   }).then(async (response) => {
     if (response.ok)
-      return response.json().then((body: { accessToken: string }) => {
+      return response.json().then((body: TokenResponse) => {
         window.location.assign('/browse');
-        localStorage.setItem('accessToken', body.accessToken);
+        localStorage.setItem('access_token', body.access_token);
       });
   });
 };
