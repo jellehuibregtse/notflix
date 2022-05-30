@@ -6,6 +6,7 @@ import { createSwaggerDocs } from '@app/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(MoviesModule);
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
   createSwaggerDocs(app, 'Movies API', 'docs/movies');
   const configService = app.get(ConfigService);

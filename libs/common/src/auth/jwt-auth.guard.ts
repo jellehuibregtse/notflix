@@ -38,7 +38,7 @@ export class JwtAuthGuard implements CanActivate {
       authentication = context.switchToRpc().getData().Authentication;
     } else if (context.getType() === 'http') {
       authentication = context.switchToHttp().getRequest()
-        .cookies?.Authentication;
+        .headers?.Authentication;
     }
     if (!authentication) {
       throw new UnauthorizedException(

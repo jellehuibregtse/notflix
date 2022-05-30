@@ -4,8 +4,8 @@ import { UsersService } from './users.service';
 import { IsEmailTakenRequest } from './dtos/is-email-taken.request';
 import { CreateUserRequest } from './dtos/create-user.request';
 
-@ApiTags('users')
-@Controller('auth/users')
+@ApiTags('auth')
+@Controller('auth')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -17,7 +17,7 @@ export class UsersController {
     return this.usersService.isEmailTaken(data.email);
   }
 
-  @Post()
+  @Post('register')
   async create(@Body() request: CreateUserRequest) {
     return this.usersService.create(request);
   }
