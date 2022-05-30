@@ -49,10 +49,7 @@ export const defaultCreate = <TRequest, TResponse = TRequest>(path: string) => {
 };
 
 export const defaultUpdate =
-  <TRequest, TResponse = TRequest>(
-    path: string,
-    queryParams?: Record<string, any>,
-  ) =>
+  <TRequest, TResponse = TRequest>(path: string) =>
   async (values: TRequest): Promise<TResponse> => {
     return executeRequest<TResponse>(path, {
       method: 'PUT',

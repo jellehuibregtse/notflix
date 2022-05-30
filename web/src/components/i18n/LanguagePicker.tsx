@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {
   createStyles,
-  UnstyledButton,
-  Menu,
-  Image,
   Group,
+  Image,
+  Menu,
+  UnstyledButton,
 } from '@mantine/core';
 import { ChevronDown } from 'tabler-icons-react';
 import dutch from '../../assets/images/flags/dutch.png';
