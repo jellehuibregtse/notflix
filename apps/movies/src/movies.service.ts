@@ -25,7 +25,7 @@ export class MoviesService {
   async findAll(
     pageOptions: PageOptionRequest,
   ): Promise<PaginatedResult<Movie>> {
-    return await this.moviesRepository.findAndCount(
+    return this.moviesRepository.findAndCount(
       {},
       { limit: pageOptions.limit, offset: pageOptions.offset },
     );
@@ -37,7 +37,7 @@ export class MoviesService {
    * @returns A promise of the movie.
    */
   async findOne(id: string): Promise<Movie> {
-    return await this.moviesRepository.findOneOrFail(id, {
+    return this.moviesRepository.findOneOrFail(id, {
       failHandler: ENTITY_NOT_FOUND('Movie', id),
     });
   }
@@ -76,6 +76,5 @@ export class MoviesService {
   async delete(id: string): Promise<void> {
     const movie = await this.moviesRepository.findOne(id);
     await this.moviesRepository.removeAndFlush(movie);
-    return;
   }
 }

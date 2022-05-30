@@ -14,7 +14,7 @@ export class UsersController {
   @ApiOkResponse()
   @ApiBadRequestResponse()
   async isEmailTaken(@Body() data: IsEmailTakenRequest): Promise<boolean> {
-    return await this.usersService.isEmailTaken(data.email);
+    return this.usersService.isEmailTaken(data.email);
   }
 
   @Post()
