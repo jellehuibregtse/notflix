@@ -11,7 +11,7 @@ export class AccountService {
     private readonly accountRepository: EntityRepository<Account>,
   ) {}
 
-  async create(request: CreateAccountRequest) {
-    this.accountRepository.create(request);
+  async create(request: CreateAccountRequest): Promise<Account> {
+    return this.accountRepository.create(request);
   }
 }

@@ -1,8 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
-import { CreateUserRequest } from '../../auth/src/users/dtos/create-user.request';
 import { RmqService } from '@app/common';
+import { CreateAccountRequest } from './dtos/create-account.request';
+import { Account } from './entities/account.entity';
 
 @Controller()
 export class AccountController {
@@ -13,10 +14,11 @@ export class AccountController {
 
   @EventPattern('user_created')
   async handleUserCreated(
-    @Payload() data: CreateUserRequest,
+    @Payload() data: CreateAccountRequest,
     @Ctx() context: RmqContext,
-  ) {
-    await this.accountService.create(data);
+  ): Promise<Account> {
+    const account = await this.accountService.create(data);
     this.rmqService.ack(context);
+    return account;
   }
 }

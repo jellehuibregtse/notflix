@@ -76,6 +76,35 @@ jobs:
           yarn build
         working-directory: ${{ env.working-directory }}
 
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install
+        run: |
+          yarn config set ignore-engines true
+          yarn
+        working-directory: ${{ env.working-directory }}
+
+      - name: Test
+        run: |
+          yarn test:cov
+        working-directory: ${{ env.working-directory }}
+
   sonarcloud:
     name: ☁ SonarCloud
     runs-on: ubuntu-latest
