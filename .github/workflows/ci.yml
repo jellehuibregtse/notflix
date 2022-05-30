@@ -102,7 +102,7 @@ jobs:
 
       - name: Test
         run: |
-          yarn test:cov
+          yarn test
         working-directory: ${{ env.working-directory }}
 
   sonarcloud:
