@@ -22,9 +22,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate({ userId }: TokenPayload): Promise<User> {
+  async validate({ sub }: TokenPayload): Promise<User> {
     try {
-      return await this.usersService.findById(userId);
+      return await this.usersService.findById(sub);
     } catch (err) {
       throw new UnauthorizedException();
     }
