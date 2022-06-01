@@ -18,11 +18,18 @@ import {
   Query,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Movie } from './entities/movie.entity';
 import { Request, Response } from 'express';
 import { MoviesService } from './movies.service';
-import { PageOptionRequest, paginate } from '@app/common';
+import {
+  JwtAuthGuard,
+  PageOptionRequest,
+  paginate,
+  Role,
+  Roles,
+} from '@app/common';
 import { CreateMovieRequest } from './dtos/create-movie.request';
 
 @ApiTags('movies')
@@ -55,6 +62,8 @@ export class MoviesController {
   }
 
   @Post()
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a movie' })
   @ApiCreatedResponse()
   @ApiBadRequestResponse()
@@ -64,6 +73,8 @@ export class MoviesController {
   }
 
   @Put(':id')
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a movie' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
@@ -77,6 +88,8 @@ export class MoviesController {
   }
 
   @Delete(':id')
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a movie' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
