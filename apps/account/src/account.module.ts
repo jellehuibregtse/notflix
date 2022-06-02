@@ -1,7 +1,7 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
-import { RmqModule } from '@app/common';
+import { AuthModule, RmqModule } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { MikroORM } from '@mikro-orm/core';
@@ -26,6 +26,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
       }),
     }),
     RmqModule,
+    AuthModule,
     MikroOrmModule.forRootAsync(asyncConfig),
     MikroOrmModule.forFeature([Account, Profile]),
   ],

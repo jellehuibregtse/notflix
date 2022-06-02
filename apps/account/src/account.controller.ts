@@ -1,7 +1,7 @@
-import { Controller, Get, Logger, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
-import { RmqService } from '@app/common';
+import { JwtAuthGuard, RmqService } from '@app/common';
 import { CreateAccountRequest } from './dtos/create-account.request';
 import { Account } from './entities/account.entity';
 import {
@@ -23,6 +23,7 @@ export class AccountController {
   }
 
   @Get(':email')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Get account by email' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
