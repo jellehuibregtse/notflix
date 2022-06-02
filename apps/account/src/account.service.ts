@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Account } from './entities/account.entity';
 import { EntityRepository } from '@mikro-orm/core';
@@ -11,7 +11,19 @@ export class AccountService {
     private readonly accountRepository: EntityRepository<Account>,
   ) {}
 
+  async findAll() {
+    return this.accountRepository.findAll();
+  }
+
+  async findByEmail(email: string): Promise<Account> {
+    const account = await this.accountRepository.findOne({ email });
+    if (account) return account;
+    throw new NotFoundException(`Account with email ${email} not found.`);
+  }
+
   async create(request: CreateAccountRequest): Promise<Account> {
-    return this.accountRepository.create(request);
+    const account = this.accountRepository.create(request);
+    await this.accountRepository.persistAndFlush(account);
+    return account;
   }
 }
