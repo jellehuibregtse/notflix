@@ -5,12 +5,12 @@ import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [RmqModule.register({ name: AUTH_SERVICE })],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  // providers: [
+  //   {
+  //     provide: APP_GUARD,
+  //     useClass: RolesGuard,
+  //   },
+  // ],
   exports: [RmqModule],
 })
 export class AuthModule {}
