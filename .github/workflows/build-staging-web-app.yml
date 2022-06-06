@@ -1,0 +1,59 @@
+name: Web Service
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'web/**'
+      - '.github/workflows/build-staging-web-app.yml'
+
+concurrency: staging-web
+
+env:
+  SERVICE_NAME: web-service
+  DEPLOYMENT_NAME: web-deployment
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: notflix
+  GKE_ZONE: europe-west4-a
+
+jobs:
+  build:
+    name: Build staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v1
+
+      - name: Login to Google Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: gcr.io
+          username: _json_key
+          password: ${{ secrets.GOOGLE_CONTAINER_REGISTRY_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          file: ./web/Dockerfile
+          tags: |
+            gcr.io/${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}/${{ env.SERVICE_NAME }}:staging
+
+  deploy:
+    needs: [build]
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v1
+
+      - name: Deploy to GKE
+        uses: ./.github/workflows/composite/deploy
+        with:
+          service_account_key: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
+          project_id: ${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          credentials: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
+          deploy_name: ${{ env.DEPLOYMENT_NAME }}

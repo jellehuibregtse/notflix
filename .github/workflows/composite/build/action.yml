@@ -1,0 +1,31 @@
+name: "Build & Publish Image"
+description: "Builds and pushes a Docker image to Google Cloud Registry"
+
+inputs:
+  service_name:
+    description: "Name of the service that should be build"
+    required: true
+  project_id:
+    description: "The project id within GRC"
+    required: true
+  registry_token:
+    description: "The token for GRC"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Login to Google Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: gcr.io
+        username: _json_key
+        password: ${{ inputs.registry_token }}
+
+    - name: Build and Push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        file: ./apps/${{ inputs.service_name }}/Dockerfile
+        tags: |
+          gcr.io/${{ inputs.project_id }}/${{ inputs.service_name }}:staging
