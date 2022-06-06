@@ -16,36 +16,36 @@ export class JwtAuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const authentication = JwtAuthGuard.getAuthentication(context);
+    const authorization = JwtAuthGuard.getAuthorization(context);
     // Using the request/response messaging pattern.
     return this.authClient
       .send('validate_user', {
-        Authentication: authentication,
+        Authorization: authorization,
       })
       .pipe(
         tap((res) => {
           JwtAuthGuard.addUser(res, context);
         }),
         catchError(() => {
-          throw new UnauthorizedException();
+          throw new UnauthorizedException(
+            'Could not validate user with auth provider.',
+          );
         }),
       );
   }
 
-  private static getAuthentication(context: ExecutionContext) {
-    let authentication: string;
+  private static getAuthorization(context: ExecutionContext) {
+    let authorization: string;
     if (context.getType() === 'rpc') {
-      authentication = context.switchToRpc().getData().Authentication;
+      authorization = context.switchToRpc().getData().Authorization;
     } else if (context.getType() === 'http') {
-      authentication = context.switchToHttp().getRequest()
-        .headers?.Authentication;
+      const headers = context.switchToHttp().getRequest().headers;
+      authorization = headers.Authorization || headers.authorization;
     }
-    if (!authentication) {
-      throw new UnauthorizedException(
-        'No value was provided for Authentication.',
-      );
+    if (!authorization) {
+      throw new UnauthorizedException('Authorization value was not present.');
     }
-    return authentication;
+    return authorization;
   }
 
   private static addUser(user: any, context: ExecutionContext) {

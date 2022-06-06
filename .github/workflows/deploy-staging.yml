@@ -1,0 +1,41 @@
+name: Deploy Staging to Google Kubernetes Engine
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'kubernetes/staging/**'
+
+concurrency: deploy-staging
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: notflix
+  GKE_ZONE: europe-west4-a
+
+jobs:
+  deploy:
+    name: Deploy Kubernetes configuration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Setup gcloud CLI
+      - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
+        with:
+          service_account_key: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
+          project_id: ${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}
+
+      # Get the GKE credentials, so we can deploy to the cluster
+      - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          credentials: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
+
+      # Deploy the Docker image to the GKE cluster
+      - name: Deploy
+        run: kubectl apply -f ./kubernetes/staging

@@ -33,7 +33,7 @@ export class UsersService {
   async findByEmail(email: string): Promise<User> {
     const user = await this.usersRepository.findOne({ email });
     if (user) return user;
-    throw new NotFoundException(`User with email ${email} not .`);
+    throw new NotFoundException(`User with email ${email} not found.`);
   }
 
   async findById(id: string): Promise<User> {
@@ -45,7 +45,6 @@ export class UsersService {
   async create(request: CreateUserRequest): Promise<User> {
     // Start a transaction.
     await this.em.begin();
-
     try {
       await this.validateCreateUserRequest(request);
       const user = this.usersRepository.create({
@@ -72,7 +71,7 @@ export class UsersService {
   }
 
   async validateUser(email: string, password: string) {
-    const user = await this.usersRepository.findOne({ email });
+    const user = await this.findByEmail(email);
     const passwordIsValid = await bcrypt.compare(password, user.password);
     if (!passwordIsValid) {
       throw new UnauthorizedException('Invalid credentials.');

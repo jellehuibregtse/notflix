@@ -7,6 +7,7 @@ import { Movie } from './entities/movie.entity';
 import * as Joi from 'joi';
 import { asyncConfig } from '../mikro-orm.config';
 import { MikroORM } from '@mikro-orm/core';
+import { AuthModule } from '@app/common';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MikroORM } from '@mikro-orm/core';
     }),
     MikroOrmModule.forRootAsync(asyncConfig),
     MikroOrmModule.forFeature([Movie]),
+    AuthModule,
   ],
   controllers: [MoviesController],
   providers: [MoviesService],

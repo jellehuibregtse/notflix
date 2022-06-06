@@ -14,3 +14,6 @@ export * from './rmq/rmq.service';
 export * from './auth/auth.module';
 export * from './auth/jwt-auth.guard';
 export * from './auth/services';
+export * from './auth/roles/roles.guard';
+export * from './auth/roles/roles.decorator';
+export * from './auth/roles/role.enum';

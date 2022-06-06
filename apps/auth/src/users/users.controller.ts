@@ -3,6 +3,7 @@ import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { IsEmailTakenRequest } from './dtos/is-email-taken.request';
 import { CreateUserRequest } from './dtos/create-user.request';
+import { User } from './entites/user.entity';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -18,7 +19,7 @@ export class UsersController {
   }
 
   @Post('register')
-  async create(@Body() request: CreateUserRequest) {
+  async create(@Body() request: CreateUserRequest): Promise<User> {
     return this.usersService.create(request);
   }
 }

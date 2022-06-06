@@ -10,6 +10,9 @@ import { Profile } from './profile.entity';
 
 @Entity()
 export class Account extends BaseEntity {
+  @Property()
+  name: string;
+
   @Unique()
   @Property()
   email: string;
