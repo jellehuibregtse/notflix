@@ -11,7 +11,7 @@ on:
 concurrency: staging-web
 
 env:
-  SERVICE_NAME: web-service
+  SERVICE_NAME: web
   DEPLOYMENT_NAME: web-deployment
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: notflix
@@ -38,22 +38,22 @@ jobs:
           push: true
           file: ./web/Dockerfile
           tags: |
-            gcr.io/${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}/${{ env.SERVICE_NAME }}:staging
+            gcr.io/${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}/${{ env.SERVICE_NAME }}-service:staging
 
-  deploy:
-    needs: [build]
-    if: success()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v1
-
-      - name: Deploy to GKE
-        uses: ./.github/workflows/composite/deploy
-        with:
-          service_account_key: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
-          project_id: ${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}
-          cluster_name: ${{ env.GKE_CLUSTER }}
-          location: ${{ env.GKE_ZONE }}
-          credentials: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
-          deploy_name: ${{ env.DEPLOYMENT_NAME }}
+#  deploy:
+#    needs: [build]
+#    if: success()
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Code
+#        uses: actions/checkout@v1
+#
+#      - name: Deploy to GKE
+#        uses: ./.github/workflows/composite/deploy
+#        with:
+#          service_account_key: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
+#          project_id: ${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}
+#          cluster_name: ${{ env.GKE_CLUSTER }}
+#          location: ${{ env.GKE_ZONE }}
+#          credentials: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
+#          deploy_name: ${{ env.DEPLOYMENT_NAME }}

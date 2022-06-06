@@ -11,7 +11,7 @@ on:
 concurrency: staging-gateway-service
 
 env:
-  SERVICE_NAME: gateway-service
+  SERVICE_NAME: gateway
   DEPLOYMENT_NAME: gateway-deployment
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: notflix
@@ -32,20 +32,20 @@ jobs:
           project_id: ${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}
           registry_token: ${{ secrets.GOOGLE_CONTAINER_REGISTRY_TOKEN }}
 
-  deploy:
-    needs: [build]
-    if: success()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v1
-
-      - name: Deploy to GKE
-        uses: ./.github/workflows/composite/deploy
-        with:
-          service_account_key: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
-          project_id: ${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}
-          cluster_name: ${{ env.GKE_CLUSTER }}
-          location: ${{ env.GKE_ZONE }}
-          credentials: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
-          deploy_name: ${{ env.DEPLOYMENT_NAME }}
+#  deploy:
+#    needs: [build]
+#    if: success()
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Code
+#        uses: actions/checkout@v1
+#
+#      - name: Deploy to GKE
+#        uses: ./.github/workflows/composite/deploy
+#        with:
+#          service_account_key: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
+#          project_id: ${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}
+#          cluster_name: ${{ env.GKE_CLUSTER }}
+#          location: ${{ env.GKE_ZONE }}
+#          credentials: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
+#          deploy_name: ${{ env.DEPLOYMENT_NAME }}
