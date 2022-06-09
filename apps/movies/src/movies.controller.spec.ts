@@ -4,6 +4,7 @@ import { MoviesService } from './movies.service';
 import { MockFunctionMetadata, ModuleMocker } from 'jest-mock';
 import { createMovie, createMovies } from '../test/factories/movie';
 import { CreateMovieRequest } from './dtos/create-movie.request';
+import { AuthModule } from '@app/common';
 
 const moduleMocker = new ModuleMocker(global);
 
@@ -14,6 +15,7 @@ describe('MoviesController', () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
+      imports: [AuthModule],
       controllers: [MoviesController],
     })
       .useMocker((token) => {
