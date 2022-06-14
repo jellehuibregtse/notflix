@@ -37,6 +37,7 @@ jobs:
         with:
           push: true
           file: ./web/Dockerfile
+          context: ./web
           tags: |
             gcr.io/${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}/${{ env.SERVICE_NAME }}-service:staging
 
