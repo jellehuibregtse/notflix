@@ -27,6 +27,5 @@ runs:
       with:
         push: true
         file: ./apps/${{ inputs.service_name }}/Dockerfile
-        context: .
         tags: |
           gcr.io/${{ inputs.project_id }}/${{ inputs.service_name }}-service:staging

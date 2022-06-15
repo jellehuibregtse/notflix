@@ -7,7 +7,7 @@ COPY yarn.lock ./
 RUN yarn install
 
 COPY . .
-RUN yarn run build
+RUN yarn run build gateway
 
 FROM node:14-alpine as production
 
