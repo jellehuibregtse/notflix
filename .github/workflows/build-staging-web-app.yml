@@ -42,6 +42,7 @@ jobs:
             gcr.io/${{ secrets.GOOGLE_CONTAINER_PROJECT_ID }}/${{ env.SERVICE_NAME }}-service:staging
 
   deploy:
+    name: Deploy staging
     needs: [build]
     if: success()
     runs-on: ubuntu-latest

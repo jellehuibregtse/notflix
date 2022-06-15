@@ -33,6 +33,7 @@ jobs:
           registry_token: ${{ secrets.GOOGLE_CONTAINER_REGISTRY_TOKEN }}
 
 #  deploy:
+#    name: Deploy staging
 #    needs: [build]
 #    if: success()
 #    runs-on: ubuntu-latest

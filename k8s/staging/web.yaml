@@ -28,5 +28,5 @@ spec:
       containers:
         # FRONTEND DEPLOYMENT
         - name: web-service
-          image: gcr.io/RB08-streamy/web-service:staging
+          image: gcr.io/rb08-streamy/web-service:staging
           imagePullPolicy: Always

@@ -29,13 +29,13 @@ spec:
       containers:
         # GATEWAY DEPLOYMENT
         - name: gateway
-          image: gcr.io/RB08-streamy/gateway-service:staging
+          image: gcr.io/rb08-streamy/gateway-service:staging
           imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
             - name: GATEWAY_PORT
-              value: 80
+              value: "80"
             - name: AUTH_SERVICE_HOST
               value: auth-service
             - name: MOVIE_SERVICE_HOST
@@ -43,6 +43,6 @@ spec:
             - name: ACCOUNT_SERVICE_HOST
               value: account-service
             - name: WEB_PORT
-              value: 3000
+              value: "3000"
             - name: WEB_HOST
               value: web-service
