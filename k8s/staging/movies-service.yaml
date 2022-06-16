@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-service
+  name: movies-service
 spec:
   selector:
-    app: auth-app
+    app: movies-app
   ports:
     - protocol: TCP
       port: 80
@@ -14,29 +14,29 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-service-deployment
+  name: movies-service-deployment
 spec:
   selector:
     matchLabels:
-      app: auth-app
+      app: movies-app
   replicas: 1
   template:
     metadata:
       labels:
-        app: auth-app
+        app: movies-app
     spec:
       containers:
-        # AUTH SERVICE DEPLOYMENT
-        - name: auth-service
-          image: gcr.io/rb08-streamy/auth-service:staging
+        # MOVIES SERVICE DEPLOYMENT
+        - name: movies-service
+          image: gcr.io/rb08-streamy/movies-service:staging
           imagePullPolicy: Always
           env:
             - name: PORT
               value: "80"
-            - name: AUTH_SERVICE_NAME
-              value: auth-service
+            - name: MOVIES_SERVICE_NAME
+              value: movies-service
             - name: DB_NAME
-              value: auth
+              value: movies
             - name: DB_HOST
               value: 10.57.96.3
             - name: DB_PASSWORD
@@ -45,13 +45,7 @@ spec:
               value: postgres
             - name: DB_PORT
               value: "5432"
-            - name: JWT_SECRET
-              value: secret
-            - name: JWT_EXPIRATION
-              value: "3600"
             - name: RABBIT_MQ_URI
               value: amqp://rabbitmq:5672
             - name: RABBIT_MQ_AUTH_QUEUE
               value: auth
-            - name: RABBIT_MQ_ACCOUNT_QUEUE
-              value: account
