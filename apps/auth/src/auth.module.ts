@@ -50,6 +50,7 @@ export class AuthModule implements OnModuleInit {
   constructor(private readonly orm: MikroORM) {}
 
   async onModuleInit() {
+    // TODO: For each app create package.json with MikroORM config. This way we can use migrations again.
     await this.orm.getSchemaGenerator().updateSchema();
   }
 }
