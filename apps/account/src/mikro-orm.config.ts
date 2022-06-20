@@ -19,7 +19,7 @@ const config: MikroOrmModuleOptions = {
   allowGlobalContext: true,
   entities: [BaseEntity, Account, Profile],
   migrations: {
-    path: './apps/account/src/database/migrations',
+    path: './dist/apps/account/src/database/migrations',
     pathTs: './apps/account/src/database/migrations',
   },
   host: process.env.DB_HOST,

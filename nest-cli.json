@@ -5,7 +5,7 @@
   "monorepo": true,
   "root": "apps/movies",
   "compilerOptions": {
-    "webpack": true,
+    "webpack": false,
     "tsConfigPath": "apps/movies/tsconfig.app.json"
   },
   "projects": {

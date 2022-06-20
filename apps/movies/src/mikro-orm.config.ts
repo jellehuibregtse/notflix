@@ -18,7 +18,7 @@ const config: MikroOrmModuleOptions = {
   allowGlobalContext: true,
   entities: [BaseEntity, Movie],
   migrations: {
-    path: './apps/movies/src/database/migrations',
+    path: './dist/apps/movies/src/database/migrations',
     pathTs: './apps/movies/src/database/migrations',
   },
   host: process.env.DB_HOST,
