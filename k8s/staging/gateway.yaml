@@ -34,7 +34,7 @@ spec:
           ports:
             - containerPort: 80
           env:
-            - name: GATEWAY_PORT
+            - name: PORT
               value: "80"
             - name: AUTH_SERVICE_HOST
               value: auth-service
