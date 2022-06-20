@@ -57,15 +57,15 @@ interface Props {
   withPasswordRequirements: boolean;
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  required: boolean;
 }
 
 export default function PasswordInput({
   withPasswordRequirements = false,
   value,
   onChange,
+  required,
 }: Props): JSX.Element {
-  const [passwordInputFocused, setPasswordInputFocused] =
-    useState<boolean>(false);
   const strength = getStrength(value);
   const bars = Array(4)
     .fill(0)
@@ -112,14 +112,12 @@ export default function PasswordInput({
       <MantinePasswordInput
         id="your-password"
         value={value}
-        onFocus={() => setPasswordInputFocused(true)}
-        onBlur={() => setPasswordInputFocused(false)}
         onChange={onChange}
         placeholder="Your password"
-        required
+        required={required}
       />
 
-      {passwordInputFocused && withPasswordRequirements && (
+      {withPasswordRequirements && (
         <>
           <Group spacing={5} grow mt="xs" mb="md">
             {bars}

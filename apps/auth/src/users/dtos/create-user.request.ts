@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsValidPassword } from '../decorators/is-valid-password.decorator';
 
 export class CreateUserRequest {
   @IsNotEmpty()
@@ -9,7 +10,6 @@ export class CreateUserRequest {
   @IsNotEmpty()
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsValidPassword()
   password: string;
 }
