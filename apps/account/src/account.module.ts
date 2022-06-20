@@ -7,7 +7,7 @@ import * as Joi from 'joi';
 import { MikroORM } from '@mikro-orm/core';
 import { Account } from './entities/account.entity';
 import { Profile } from './entities/profile.entity';
-import { asyncConfig } from '../mikro-orm.config';
+import { asyncConfig } from './mikro-orm.config';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 @Module({
@@ -37,6 +37,11 @@ export class AccountModule implements OnModuleInit {
   constructor(private readonly orm: MikroORM) {}
 
   async onModuleInit() {
-    await this.orm.getSchemaGenerator().updateSchema();
+    const migrator = this.orm.getMigrator();
+    const migrations = await migrator.getPendingMigrations();
+
+    if (migrations && migrations.length > 0) {
+      await migrator.up();
+    }
   }
 }

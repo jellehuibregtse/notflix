@@ -10,7 +10,7 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { UsersModule } from './users/users.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { User } from './users/entites/user.entity';
-import { asyncConfig } from '../mikro-orm.config';
+import { asyncConfig } from './mikro-orm.config';
 import { MikroORM } from '@mikro-orm/core';
 
 @Module({
@@ -50,7 +50,11 @@ export class AuthModule implements OnModuleInit {
   constructor(private readonly orm: MikroORM) {}
 
   async onModuleInit() {
-    // TODO: For each app create package.json with MikroORM config. This way we can use migrations again.
-    await this.orm.getSchemaGenerator().updateSchema();
+    const migrator = this.orm.getMigrator();
+    const migrations = await migrator.getPendingMigrations();
+
+    if (migrations && migrations.length > 0) {
+      await migrator.up();
+    }
   }
 }

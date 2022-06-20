@@ -5,7 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Movie } from './entities/movie.entity';
 import * as Joi from 'joi';
-import { asyncConfig } from '../mikro-orm.config';
+import { asyncConfig } from './mikro-orm.config';
 import { MikroORM } from '@mikro-orm/core';
 import { AuthModule } from '@app/common';
 
@@ -34,6 +34,11 @@ export class MoviesModule implements OnModuleInit {
   constructor(private readonly orm: MikroORM) {}
 
   async onModuleInit() {
-    await this.orm.getSchemaGenerator().updateSchema();
+    const migrator = this.orm.getMigrator();
+    const migrations = await migrator.getPendingMigrations();
+
+    if (migrations && migrations.length > 0) {
+      await migrator.up();
+    }
   }
 }

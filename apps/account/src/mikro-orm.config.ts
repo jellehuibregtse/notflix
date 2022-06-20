@@ -6,7 +6,8 @@ import {
 } from '@mikro-orm/nestjs/typings';
 import { BaseEntity } from '@app/common';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
-import { User } from './src/users/entites/user.entity';
+import { Account } from './entities/account.entity';
+import { Profile } from './entities/profile.entity';
 
 const logger = new Logger('MikroORM');
 
@@ -16,7 +17,11 @@ const config: MikroOrmModuleOptions = {
   highlighter: new SqlHighlighter(),
   logger: logger.log.bind(logger),
   allowGlobalContext: true,
-  entities: [BaseEntity, User],
+  entities: [BaseEntity, Account, Profile],
+  migrations: {
+    path: './apps/account/src/database/migrations',
+    pathTs: './apps/account/src/database/migrations',
+  },
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
   dbName: process.env.DB_NAME,
