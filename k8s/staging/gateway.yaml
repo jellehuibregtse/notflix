@@ -41,7 +41,7 @@ spec:
             - name: AUTH_SERVICE_PORT
               value: "80"
             - name: MOVIE_SERVICE_HOST
-              value: movie-service
+              value: movies-service
             - name: MOVIE_SERVICE_PORT
               value: "80"
             - name: ACCOUNT_SERVICE_HOST
