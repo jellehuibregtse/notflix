@@ -102,7 +102,6 @@ export function AuthenticationForm(props: PaperProps<'div'>) {
 
             <PasswordInput
               required
-              label={'Password'}
               withPasswordRequirements={type === 'register'}
               {...form.getInputProps('password')}
             />
