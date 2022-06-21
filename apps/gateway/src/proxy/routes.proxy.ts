@@ -8,6 +8,7 @@ function useHttpProxy(target: string) {
     changeOrigin: true,
     logLevel: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
     logProvider: useLogger,
+    secure: false,
   });
 }
 
