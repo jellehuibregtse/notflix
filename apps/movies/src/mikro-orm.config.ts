@@ -18,6 +18,7 @@ const config: MikroOrmModuleOptions = {
   allowGlobalContext: true,
   entities: [BaseEntity, Movie],
   migrations: {
+    disableForeignKeys: false,
     path: './dist/apps/movies/src/database/migrations',
     pathTs: './apps/movies/src/database/migrations',
   },

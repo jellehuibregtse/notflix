@@ -19,6 +19,7 @@ const config: MikroOrmModuleOptions = {
   allowGlobalContext: true,
   entities: [BaseEntity, Account, Profile],
   migrations: {
+    disableForeignKeys: false,
     path: './dist/apps/account/src/database/migrations',
     pathTs: './apps/account/src/database/migrations',
   },

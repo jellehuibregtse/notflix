@@ -4,23 +4,31 @@ interface TokenResponse {
   token_type: string;
 }
 
-export const useRegister = (email: string, password: string) => {
+export const useRegister = (
+  form: any,
+  name: string,
+  email: string,
+  password: string,
+) => {
   fetch('/api/auth/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ name, email, password }),
   }).then(async (response) => {
-    if (response.ok)
+    if (response.ok) {
       return response.json().then((body: TokenResponse) => {
         window.location.assign('/browse');
         localStorage.setItem('access_token', body.access_token);
       });
+    }
+    const responseBody = await response.json();
+    return form.setErrors({ email: responseBody.message });
   });
 };
 
-export const useLogin = (email: string, password: string) => {
+export const useLogin = (form: any, email: string, password: string) => {
   fetch('/api/auth/login', {
     method: 'POST',
     headers: {
@@ -28,11 +36,14 @@ export const useLogin = (email: string, password: string) => {
     },
     body: JSON.stringify({ email, password }),
   }).then(async (response) => {
-    if (response.ok)
+    if (response.ok) {
       return response.json().then((body: TokenResponse) => {
         window.location.assign('/browse');
         localStorage.setItem('access_token', body.access_token);
       });
+    }
+    const responseBody = await response.json();
+    return form.setErrors({ email: responseBody.message });
   });
 };
 
