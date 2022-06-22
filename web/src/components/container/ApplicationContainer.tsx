@@ -6,6 +6,8 @@ import {
 import { ReactNode, Suspense } from 'react';
 import { CustomHeader } from './CustomHeader';
 import { CustomLoader } from '../loader/CustomLoader';
+import { QueryClientProvider } from 'react-query';
+import { queryClient } from '../../api/queryClient';
 
 const theme: MantineThemeOverride = {
   fontSizes: {
@@ -63,17 +65,22 @@ interface Props {
 
 export function ApplicationContainer({ children }: Props): JSX.Element {
   return (
-    <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
-      <Suspense
-        fallback={
-          <Container fluid>
-            <CustomLoader />
-          </Container>
-        }
-      >
-        <CustomHeader links={headerLinks} user={{ name: 'Jelle', image: '' }} />
-        {children}
-      </Suspense>
-    </MantineProvider>
+    <QueryClientProvider client={queryClient}>
+      <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
+        <Suspense
+          fallback={
+            <Container fluid>
+              <CustomLoader />
+            </Container>
+          }
+        >
+          <CustomHeader
+            links={headerLinks}
+            user={{ name: 'Jelle', image: '' }}
+          />
+          {children}
+        </Suspense>
+      </MantineProvider>
+    </QueryClientProvider>
   );
 }
