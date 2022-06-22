@@ -672,10 +672,10 @@
     mikro-orm "^5.1.5"
     reflect-metadata "0.1.13"
 
-"@mikro-orm/knex@^5.1.5":
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/knex/-/knex-5.1.5.tgz#dad6ce41bca3e779e2553591e0e3d60864755744"
-  integrity sha512-u1L5WIBliXYTpuRLpTcTPn8/b6loQ41EMsiZTHs5utBKJK19RDqv8YtMVzu7Wku5E8RTYuF27OjHVVLvUV61PQ==
+"@mikro-orm/knex@^5.1.5", "@mikro-orm/knex@^5.2.1":
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/knex/-/knex-5.2.1.tgz#45ec01a74a4f86865d8524c3bca46ce484e34a0d"
+  integrity sha512-Lw91BqftBZZqJ9LEA62x84TF8akC6H4UfRIAXPnE+95JM6kQ+kWy7WTCI2n6v/PrzFyeNShOvPRnHpdOXpnzKQ==
   dependencies:
     fs-extra "10.1.0"
     knex "2.1.0"
@@ -696,12 +696,12 @@
   resolved "https://registry.yarnpkg.com/@mikro-orm/nestjs/-/nestjs-5.0.1.tgz#658052cc91691839e32c2653a95aa7311788dce4"
   integrity sha512-nvUlMCB0yFHSr44ZyWOSGH4RMo/3bM7Wdzsuc2Rf/JeXfErARYIzJWeRXuPlxGYSbFGLKx+uFmZgq+3gIqtWJw==
 
-"@mikro-orm/postgresql@^5.1.4":
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/postgresql/-/postgresql-5.1.5.tgz#c7253177062c3a76620a1485b43920f44235cf9a"
-  integrity sha512-XUy87tqm0COjmYPNvewluRovZ+gnrU4gSbqPySLvM8csaEQ3OxpUiMb/WGyFrKnRWKGRugX1hZsUigQS6LznHg==
+"@mikro-orm/postgresql@^5.2.1":
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/postgresql/-/postgresql-5.2.1.tgz#0124465ee7f1078be39b085b7c726e5b798565b4"
+  integrity sha512-D9TpuqKYuJWTEd1E7JLAN8tfj9Pg9ZHJCSTT+ozLYLmMIWPBjwPxyk5C6tsXR8sWawe3h9RSZ1falcVkV11Wkg==
   dependencies:
-    "@mikro-orm/knex" "^5.1.5"
+    "@mikro-orm/knex" "^5.2.1"
     pg "8.7.3"
 
 "@mikro-orm/sql-highlighter@^1.0.1":
