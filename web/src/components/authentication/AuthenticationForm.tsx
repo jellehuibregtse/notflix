@@ -79,13 +79,7 @@ export function AuthenticationForm(props: PaperProps<'div'>) {
           onSubmit={form.onSubmit((values: typeof form.values) => {
             return type === 'login'
               ? useLogin(form, values.email, values.password)
-              : useRegister(
-                  form,
-                  toggle,
-                  values.name,
-                  values.email,
-                  values.password,
-                );
+              : useRegister(form, values.name, values.email, values.password);
           })}
           id={type}
         >

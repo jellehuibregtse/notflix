@@ -6,7 +6,6 @@ interface TokenResponse {
 
 export const useRegister = (
   form: any,
-  toggle: any,
   name: string,
   email: string,
   password: string,
