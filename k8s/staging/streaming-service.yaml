@@ -34,4 +34,4 @@ spec:
             - name: PORT
               value: "80"
             - name: VIDEO_PATH
-              value: "video.mp4"
+              value: "/video.mp4"
