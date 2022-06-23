@@ -23,4 +23,4 @@ RUN yarn install --production
 COPY . .
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node", "dist/apps/streaming/src/main"]
+CMD ["node", "dist/apps/streaming/main"]
