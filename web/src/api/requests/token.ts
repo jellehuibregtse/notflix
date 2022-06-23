@@ -47,6 +47,6 @@ export const useLogin = (form: any, email: string, password: string) => {
 };
 
 export const useLogout = () => {
-  localStorage.removeItem('access_token');
+  localStorage.clear();
   window.location.assign('/');
 };

@@ -1,8 +1,4 @@
 import avatarOne from '../../assets/images/avatars/Avatar_01.png';
-import avatarTwo from '../../assets/images/avatars/Avatar_02.png';
-import avatarThree from '../../assets/images/avatars/Avatar_03.png';
-import avatarFour from '../../assets/images/avatars/Avatar_04.png';
-import avatarFive from '../../assets/images/avatars/Avatar_05.png';
 import {
   Button,
   Center,
@@ -14,9 +10,11 @@ import {
 } from '@mantine/core';
 import { Profile } from './Profile';
 import { useToggle } from '@mantine/hooks';
+import { useGetAccount } from '../../api/requests/account';
 
 export function ChooseProfile(): JSX.Element {
   const [type, toggle] = useToggle('select', ['select', 'edit']);
+  const account = useGetAccount();
 
   const chooseProfile = () => {
     localStorage.setItem('profile_chosen', String(true));
@@ -32,21 +30,11 @@ export function ChooseProfile(): JSX.Element {
           </Text>
         </Center>
         <Group position="center" spacing="xs">
-          <UnstyledButton onClick={chooseProfile}>
-            <Profile imageSrc={avatarOne} name={'John Doe'} />
-          </UnstyledButton>
-          <UnstyledButton onClick={chooseProfile}>
-            <Profile imageSrc={avatarTwo} name={'John Doe'} />
-          </UnstyledButton>
-          <UnstyledButton onClick={chooseProfile}>
-            <Profile imageSrc={avatarThree} name={'John Doe'} />
-          </UnstyledButton>
-          <UnstyledButton onClick={chooseProfile}>
-            <Profile imageSrc={avatarFour} name={'John Doe'} />
-          </UnstyledButton>
-          <UnstyledButton onClick={chooseProfile}>
-            <Profile imageSrc={avatarFive} name={'John Doe'} />
-          </UnstyledButton>
+          {account?.profiles.map((profile) => (
+            <UnstyledButton onClick={chooseProfile}>
+              <Profile imageSrc={avatarOne} name={profile.name} />
+            </UnstyledButton>
+          ))}
         </Group>
         <Container>
           {type === 'select' ? (
