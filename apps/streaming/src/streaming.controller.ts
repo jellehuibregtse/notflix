@@ -12,7 +12,7 @@ export class StreamingController {
       throw new BadRequestException('Range header is required');
     }
 
-    const videoPath = '/usr/src/app/assets/video.mp4';
+    const videoPath = process.env.VIDEO_PATH || '/usr/src/app/assets/video.mp4';
     const videoSize = fs.statSync(videoPath).size;
 
     // Parse range (example: 'bytes=start-')

@@ -33,3 +33,5 @@ spec:
           env:
             - name: PORT
               value: "80"
+            - name: VIDEO_PATH
+              value: "video.mp4"
