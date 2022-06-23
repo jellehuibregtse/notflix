@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: streaming-service
+spec:
+  selector:
+    app: streaming-app
+  ports:
+    - protocol: TCP
+      port: 80
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streaming-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: streaming-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: streaming-app
+    spec:
+      containers:
+        # STREAMING SERVICE DEPLOYMENT
+        - name: streaming-service
+          image: gcr.io/rb08-streamy/streaming-service:staging
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "80"

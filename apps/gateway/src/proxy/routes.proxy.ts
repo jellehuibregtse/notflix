@@ -27,6 +27,9 @@ export const registerProxyGateway = (app: INestApplication) => {
     '/api/users': `http://${process.env.AUTH_SERVICE_HOST}:${process.env.AUTH_SERVICE_PORT}`,
     '/docs/auth': `http://${process.env.AUTH_SERVICE_HOST}:${process.env.AUTH_SERVICE_PORT}`,
 
+    // Streaming service API proxy
+    '/api/video': `http://${process.env.STREAMING_SERVICE_HOST}:${process.env.STREAMING_SERVICE_PORT}`,
+
     // Web application
     '*': `http://${process.env.WEB_HOST}:${process.env.WEB_PORT}`,
   };

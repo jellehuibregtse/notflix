@@ -1,4 +1,11 @@
-import { Box, Container, Grid, Group, Text } from '@mantine/core';
+import {
+  Box,
+  Container,
+  Grid,
+  Group,
+  Text,
+  UnstyledButton,
+} from '@mantine/core';
 import { TitleCard } from './TitleCard';
 import { useGetMovies } from '../../api/requests/movie';
 import { Movie } from '../../api/models/Movie';
@@ -13,9 +20,12 @@ export function Slider(): JSX.Element {
       </Text>
       <Group>
         {data?.map((movie: Movie) => (
-          <Box key={movie.id}>
+          <UnstyledButton
+            onClick={() => window.location.assign('/play')}
+            key={movie.id}
+          >
             <TitleCard movie={movie} />
-          </Box>
+          </UnstyledButton>
         ))}
       </Group>
     </Container>

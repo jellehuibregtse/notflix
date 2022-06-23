@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Account } from './entities/account.entity';
-import { EntityRepository } from '@mikro-orm/core';
+import { EntityRepository, wrap } from '@mikro-orm/core';
 import { CreateAccountRequest } from './dtos/create-account.request';
 import { Profile } from './entities/profile.entity';
 
@@ -28,6 +28,16 @@ export class AccountService {
   }
 
   async create(request: CreateAccountRequest): Promise<Account> {
+    const existingAccount = await this.accountRepository.findOne({
+      email: request.email,
+    });
+
+    if (existingAccount) {
+      wrap(existingAccount).assign(request);
+      await this.accountRepository.flush();
+      return existingAccount;
+    }
+
     const account = this.accountRepository.create(request);
     const profile = this.profileRepository.create({
       name: account.name,
