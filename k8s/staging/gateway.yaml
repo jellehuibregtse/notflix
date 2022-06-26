@@ -34,19 +34,23 @@ spec:
           ports:
             - containerPort: 80
           env:
-            - name: GATEWAY_PORT
+            - name: PORT
               value: "80"
             - name: AUTH_SERVICE_HOST
               value: auth-service
             - name: AUTH_SERVICE_PORT
               value: "80"
             - name: MOVIE_SERVICE_HOST
-              value: movie-service
+              value: movies-service
             - name: MOVIE_SERVICE_PORT
               value: "80"
             - name: ACCOUNT_SERVICE_HOST
               value: account-service
             - name: ACCOUNT_SERVICE_PORT
+              value: "80"
+            - name: STREAMING_SERVICE_HOST
+              value: streaming-service
+            - name: STREAMING_SERVICE_PORT
               value: "80"
             - name: WEB_PORT
               value: "3000"

@@ -33,8 +33,6 @@ spec:
           env:
             - name: PORT
               value: "80"
-            - name: AUTH_SERVICE_NAME
-              value: auth-service
             - name: DB_NAME
               value: auth
             - name: DB_HOST
@@ -50,7 +48,7 @@ spec:
             - name: JWT_EXPIRATION
               value: "3600"
             - name: RABBIT_MQ_URI
-              value: amqp://rabbitmq:5672
+              value: amqps://ulqgwwfr:KkCBWiaOFEmUpkiyDhaWwC45kM-SJKcm@kangaroo.rmq.cloudamqp.com/ulqgwwfr
             - name: RABBIT_MQ_AUTH_QUEUE
               value: auth
             - name: RABBIT_MQ_ACCOUNT_QUEUE

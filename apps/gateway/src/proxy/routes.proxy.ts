@@ -8,6 +8,7 @@ function useHttpProxy(target: string) {
     changeOrigin: true,
     logLevel: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
     logProvider: useLogger,
+    secure: false,
   });
 }
 
@@ -25,6 +26,9 @@ export const registerProxyGateway = (app: INestApplication) => {
     '/api/auth': `http://${process.env.AUTH_SERVICE_HOST}:${process.env.AUTH_SERVICE_PORT}`,
     '/api/users': `http://${process.env.AUTH_SERVICE_HOST}:${process.env.AUTH_SERVICE_PORT}`,
     '/docs/auth': `http://${process.env.AUTH_SERVICE_HOST}:${process.env.AUTH_SERVICE_PORT}`,
+
+    // Streaming service API proxy
+    '/api/video': `http://${process.env.STREAMING_SERVICE_HOST}:${process.env.STREAMING_SERVICE_PORT}`,
 
     // Web application
     '*': `http://${process.env.WEB_HOST}:${process.env.WEB_PORT}`,

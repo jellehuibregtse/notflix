@@ -1,4 +1,14 @@
-import { Box, Card, createStyles, Image } from '@mantine/core';
+import {
+  Badge,
+  Box,
+  Card,
+  Center,
+  createStyles,
+  Group,
+  Image,
+  Text,
+} from '@mantine/core';
+import { Movie } from '../../api/models/Movie';
 
 const useStyles = createStyles(() => ({
   card: {
@@ -16,7 +26,11 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-export function TitleCard(): JSX.Element {
+interface Props {
+  movie: Movie;
+}
+
+export function TitleCard({ movie }: Props): JSX.Element {
   const { classes } = useStyles();
 
   return (
@@ -27,9 +41,8 @@ export function TitleCard(): JSX.Element {
             width={235}
             height={135}
             radius="xs"
-            src={
-              'https://www.themoviedb.org/t/p/original/hPea3Qy5Gd6z4kJLUruBbwAH8Rm.jpg'
-            }
+            alt={movie.title}
+            src={'https://www.themoviedb.org/t/p/original' + movie.posterPath}
           />
         </Card.Section>
       </Card>

@@ -5,7 +5,7 @@
   "monorepo": true,
   "root": "apps/movies",
   "compilerOptions": {
-    "webpack": true,
+    "webpack": false,
     "tsConfigPath": "apps/movies/tsconfig.app.json"
   },
   "projects": {
@@ -52,6 +52,15 @@
       "sourceRoot": "apps/gateway/src",
       "compilerOptions": {
         "tsConfigPath": "apps/gateway/tsconfig.app.json"
+      }
+    },
+    "streaming": {
+      "type": "application",
+      "root": "apps/streaming",
+      "entryFile": "main",
+      "sourceRoot": "apps/streaming/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/streaming/tsconfig.app.json"
       }
     }
   }

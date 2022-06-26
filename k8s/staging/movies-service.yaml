@@ -33,8 +33,6 @@ spec:
           env:
             - name: PORT
               value: "80"
-            - name: MOVIES_SERVICE_NAME
-              value: movies-service
             - name: DB_NAME
               value: movies
             - name: DB_HOST
@@ -46,6 +44,6 @@ spec:
             - name: DB_PORT
               value: "5432"
             - name: RABBIT_MQ_URI
-              value: amqp://rabbitmq:5672
+              value: amqps://ulqgwwfr:KkCBWiaOFEmUpkiyDhaWwC45kM-SJKcm@kangaroo.rmq.cloudamqp.com/ulqgwwfr
             - name: RABBIT_MQ_AUTH_QUEUE
               value: auth

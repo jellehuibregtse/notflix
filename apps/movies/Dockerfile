@@ -21,4 +21,4 @@ RUN yarn install --production
 COPY . .
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node", "dist/apps/movies/main"]
+CMD ["node", "dist/apps/movies/src/main"]

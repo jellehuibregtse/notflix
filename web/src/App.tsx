@@ -4,6 +4,7 @@ import { Home } from './pages/home/Home';
 import { Login } from './pages/login/Login';
 import { Browse } from './pages/browse/Browse';
 import { useLoggedIn } from './hooks/useLoggedIn';
+import { VideoPlayer } from './pages/player/VideoPlayer';
 
 export default function App(): JSX.Element {
   const loggedIn = useLoggedIn();
@@ -19,6 +20,7 @@ export default function App(): JSX.Element {
         ) : (
           <>
             <Route path="/browse" element={<Browse />} />
+            <Route path="/play" element={<VideoPlayer />} />
           </>
         )}
       </Routes>

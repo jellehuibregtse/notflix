@@ -34,14 +34,19 @@ export function AuthenticationForm(props: PaperProps<'div'>) {
 
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-      password: (value) =>
-        value.length >= minLength &&
-        includesNumber.test(value) &&
-        includesLowerCase.test(value) &&
-        includesUpperCase.test(value) &&
-        includesSpecialSymbol.test(value)
+      password: (value) => {
+        if (type === 'login') {
+          return null;
+        }
+
+        return value.length >= minLength &&
+          includesNumber.test(value) &&
+          includesLowerCase.test(value) &&
+          includesUpperCase.test(value) &&
+          includesSpecialSymbol.test(value)
           ? null
-          : 'Invalid password',
+          : 'Invalid password';
+      },
     },
   });
 
@@ -73,14 +78,15 @@ export function AuthenticationForm(props: PaperProps<'div'>) {
         <form
           onSubmit={form.onSubmit((values: typeof form.values) => {
             return type === 'login'
-              ? useLogin(values.email, values.password)
-              : useRegister(values.email, values.password);
+              ? useLogin(form, values.email, values.password)
+              : useRegister(form, values.name, values.email, values.password);
           })}
           id={type}
         >
           <Group direction="column" grow>
             {type === 'register' && (
               <TextInput
+                required
                 label={'Name'}
                 placeholder={'Your name'}
                 {...form.getInputProps('name')}
@@ -95,12 +101,14 @@ export function AuthenticationForm(props: PaperProps<'div'>) {
             />
 
             <PasswordInput
+              required
               withPasswordRequirements={type === 'register'}
               {...form.getInputProps('password')}
             />
 
             {type === 'register' && (
               <Checkbox
+                required
                 label={'I accept the terms and conditions'}
                 {...form.getInputProps('terms', { type: 'checkbox' })}
               />

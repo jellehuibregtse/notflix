@@ -6,7 +6,10 @@ export const createSwaggerDocs = (
   title: string,
   path: string,
 ): void => {
-  const config = new DocumentBuilder().setTitle(title).build();
+  const config = new DocumentBuilder()
+    .addSecurity('bearer', { type: 'http', scheme: 'bearer' })
+    .setTitle(title)
+    .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(path, app, document);
 };

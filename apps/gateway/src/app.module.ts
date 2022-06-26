@@ -14,6 +14,8 @@ import * as Joi from 'joi';
         AUTH_SERVICE_PORT: Joi.number().required(),
         ACCOUNT_SERVICE_HOST: Joi.string().required(),
         ACCOUNT_SERVICE_PORT: Joi.number().required(),
+        STREAMING_SERVICE_HOST: Joi.string().required(),
+        STREAMING_SERVICE_PORT: Joi.number().required(),
         WEB_HOST: Joi.string().required(),
         WEB_PORT: Joi.number().required(),
       }),

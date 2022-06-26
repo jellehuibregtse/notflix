@@ -24,6 +24,8 @@ import avatarThree from '../../assets/images/avatars/Avatar_03.png';
 import avatarFour from '../../assets/images/avatars/Avatar_04.png';
 import avatarFive from '../../assets/images/avatars/Avatar_05.png';
 import { useLogout } from '../../api/requests/token';
+import { useGetAccount } from '../../api/requests/account';
+import { Profile } from '../../api/models/Profile';
 
 const HEADER_HEIGHT = 60;
 
@@ -130,6 +132,7 @@ export function CustomHeader({ links, user }: Props): JSX.Element {
   const loggedIn = useLoggedIn();
   const [opened, toggleOpened] = useBooleanToggle(false);
   const [userMenuOpened, setUserMenuOpened] = useBooleanToggle(false);
+  const account = useGetAccount();
 
   const items = links.map((link: HeaderLink) => {
     const menuItems = link.links?.map((item) => (
@@ -220,22 +223,12 @@ export function CustomHeader({ links, user }: Props): JSX.Element {
                     </UnstyledButton>
                   }
                 >
-                  <Menu.Item icon={<Avatar size={24} src={avatarOne} />}>
-                    John Doe
-                  </Menu.Item>
-                  <Menu.Item icon={<Avatar size={24} src={avatarTwo} />}>
-                    John Doe
-                  </Menu.Item>
-                  <Menu.Item icon={<Avatar size={24} src={avatarThree} />}>
-                    John Doe
-                  </Menu.Item>
-                  <Menu.Item icon={<Avatar size={24} src={avatarFour} />}>
-                    John Doe
-                  </Menu.Item>
-                  <Menu.Item icon={<Avatar size={24} src={avatarFive} />}>
-                    John Doe
-                  </Menu.Item>
-
+                  {account?.profiles &&
+                    account?.profiles.map((profile: Profile) => (
+                      <Menu.Item icon={<Avatar size={24} src={avatarOne} />}>
+                        {profile.name}
+                      </Menu.Item>
+                    ))}
                   <Divider />
                   <Menu.Item icon={<User size={24} />}>Account</Menu.Item>
                   <Menu.Item icon={<Help size={24} />}>Help centre</Menu.Item>

@@ -10,7 +10,7 @@ async function bootstrap() {
   const rmqService = app.get<RmqService>(RmqService);
   app.connectMicroservice(rmqService.getOptions('ACCOUNT'));
   app.useGlobalPipes(new ValidationPipe());
-  createSwaggerDocs(app, 'Auth API', 'docs/account');
+  createSwaggerDocs(app, 'Account API', 'docs/account');
   const configService = app.get(ConfigService);
   await app.startAllMicroservices();
   await app.listen(configService.get<string>('PORT'));
