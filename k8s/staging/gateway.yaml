@@ -48,6 +48,10 @@ spec:
               value: account-service
             - name: ACCOUNT_SERVICE_PORT
               value: "80"
+            - name: STREAMING_SERVICE_HOST
+              value: streaming-service
+            - name: STREAMING_SERVICE_PORT
+              value: "80"
             - name: WEB_PORT
               value: "3000"
             - name: WEB_HOST

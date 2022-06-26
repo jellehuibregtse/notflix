@@ -34,7 +34,7 @@ export class JwtAuthGuard implements CanActivate {
       );
   }
 
-  private static getAuthorization(context: ExecutionContext) {
+  static getAuthorization(context: ExecutionContext) {
     let authorization: string;
     if (context.getType() === 'rpc') {
       authorization = context.switchToRpc().getData().Authorization;

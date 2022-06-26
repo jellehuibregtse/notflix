@@ -69,6 +69,18 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
 
+  streaming:
+    build:
+      context: .
+      dockerfile: ./apps/streaming/Dockerfile
+      target: development
+    command: yarn start:dev streaming
+    env_file:
+      - ./apps/streaming/.env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
   rabbitmq:
     image: rabbitmq
 

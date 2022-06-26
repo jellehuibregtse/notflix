@@ -18,10 +18,7 @@ export const useRegister = (
     body: JSON.stringify({ name, email, password }),
   }).then(async (response) => {
     if (response.ok) {
-      return response.json().then((body: TokenResponse) => {
-        window.location.assign('/browse');
-        localStorage.setItem('access_token', body.access_token);
-      });
+      window.location.assign('/login');
     }
     const responseBody = await response.json();
     return form.setErrors({ email: responseBody.message });
@@ -38,8 +35,10 @@ export const useLogin = (form: any, email: string, password: string) => {
   }).then(async (response) => {
     if (response.ok) {
       return response.json().then((body: TokenResponse) => {
-        window.location.assign('/browse');
+        if (!body.access_token) return;
+
         localStorage.setItem('access_token', body.access_token);
+        window.location.assign('/browse');
       });
     }
     const responseBody = await response.json();
@@ -48,6 +47,6 @@ export const useLogin = (form: any, email: string, password: string) => {
 };
 
 export const useLogout = () => {
-  localStorage.removeItem('access_token');
+  localStorage.clear();
   window.location.assign('/');
 };
